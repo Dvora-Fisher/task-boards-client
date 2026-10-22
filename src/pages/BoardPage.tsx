@@ -1,3 +1,6 @@
+import { useParams } from "react-router-dom"
+
 export function BoardPage(){
-return <h1>הגדרות לוח</h1>
+    const params = useParams<{boardId : string}>()
+return <h1>לוח {params.boardId}</h1>
 }
