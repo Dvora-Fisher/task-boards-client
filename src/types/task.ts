@@ -1,26 +1,46 @@
-export interface task{
-    id:number,
-    boardId:number
-    title:string,
-    description?:string,
-    isCompleted:boolean,
-    dueDate:string | null,
-    reminderAt:string | null,
-    createdById:number,
-    craetedAt:string
+import type { Audience, UUID, ISODateTime, ISODate, BaseEntity, PaginationParams, DateRange } from "./common";
+import type { UserSummary } from "./user";
+
+export type TaskStatus = 'TODO' | 'IN_PROGRESS' | 'DONE';
+export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH';
+export type ScheduleType = 'NONE' | 'DATE' | 'TIMED';
+
+export interface Task extends BaseEntity {
+    boardId: UUID;
+    title: string;
+    description: string | null;
+    status: TaskStatus;
+    priority: TaskPriority;
+    audience: Audience;
+    scheduleType: ScheduleType;
+    dueDate: ISODate | null;        // משימה לכל היום
+    startAt: ISODateTime | null;    // משימה עם שעות
+    endAt: ISODateTime | null;
+    createdBy: UserSummary | null;
+    assignees: UserSummary[];
 }
 
-export interface createTaskRequest{
-    title:string,
-    description?:string,
-       dueDate?:string | null,
-    reminderAt?:string | null
+export interface CreateTaskInput {
+    title: string;
+    description?: string | null;
+    status?: TaskStatus;
+    priority?: TaskPriority;
+    audience?: Audience;
+    assigneeIds?: UUID[] | null;
+    dueDate?: ISODate | null;
+    startAt?: ISODateTime | null;
+    endAt?: ISODateTime | null;
 }
 
-export interface UpdateTaskRequest{
-    title?:string,
-    description?:string,
-       dueDate?:string | null,
-    reminderAt?:string | null,
-    isCompleted?:boolean
+export interface TasksQueryParams extends PaginationParams, Partial<DateRange> {
+    status?: TaskStatus[];
+    priority?: TaskPriority[];
+    schedule?: ScheduleType;
+    search?: string;
+    assignedToMe?: boolean;
+    sort?: 'createdAt' | 'updatedAt' | 'title' | 'startAt' | 'dueDate';
+    order?: 'asc' | 'desc'
+
 }
+
+
