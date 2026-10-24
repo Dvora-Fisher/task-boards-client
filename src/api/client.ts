@@ -29,17 +29,31 @@ export class ApiError extends Error {
 }
 
 export interface ApiOptions {
-    method: 'GET' | 'POST' | 'PATCH' | 'DELETE'
-    body: unknown,
-    query: object
+    method?: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+    body?: unknown,
+    query?: object
 }
 
-export async function api<T>(path: string, options: ApiOptions): Promise<T> {
+export async function api<T>(path: string, options: ApiOptions = {}): Promise<T> {
     const url = new URL('/api' + path, API_URL)
     const params = new URLSearchParams(
         Object.entries(options.query ?? {})
-            .filter(([_, value]) => value != undefined && value != null && value != ' ')
+            .filter(([_, value]) => value !== undefined && value !== null && value !== '')
             .map(([key, value]) => [key, String(value)])
     )
     url.search = params.toString()
+
+    const headers: Record<string, string> = {}
+    const token = tokenStore.get()
+    if (token != null)
+        headers['Authorization'] = ` Bearer ${token}`
+    if (options.body != undefined)
+        headers['Content-Type'] = 'application/json'
+    const res = await fetch(url,
+        {
+            method: options.method ?? 'GET',
+            headers: headers,
+            body: options.body == null ? undefined : JSON.stringify(options.body)
+        })
+        console.log(res)
 }
