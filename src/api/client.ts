@@ -1,4 +1,4 @@
-import type { ErrorCode } from "../types"
+import type { ApiSuccess, ErrorCode, ApiErrorBody } from "../types"
 
 const API_URL = import.meta.env.VITE_API_URL
 const TOKEN_KEY = 'accessToken'
@@ -45,15 +45,28 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
 
     const headers: Record<string, string> = {}
     const token = tokenStore.get()
-    if (token != null)
-        headers['Authorization'] = ` Bearer ${token}`
-    if (options.body != undefined)
+    if (token !== null) {
+        headers['Authorization'] = ` Bearer${token}`
+    }
+    if (options.body !== undefined) {
         headers['Content-Type'] = 'application/json'
+    }
     const res = await fetch(url,
         {
             method: options.method ?? 'GET',
             headers: headers,
-            body: options.body == null ? undefined : JSON.stringify(options.body)
+            body: options.body !== null ? JSON.stringify(options.body) : undefined
         })
-        console.log(res)
+    //errors checking
+    if (res.status === 204)
+        return undefined as T
+    const json: ApiSuccess<T> | ApiErrorBody = await res.json()
+    if (!json.success) {
+        if (res.status === 401) {
+            tokenStore.clear()
+        }
+        throw new ApiError(res.status, json.error.code, json.error.code, json.error.details)
+    }
+    console.log(res)
+    return json.data
 }
