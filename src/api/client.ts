@@ -27,3 +27,19 @@ export class ApiError extends Error {
         this.name = 'ApiError'
     }
 }
+
+export interface ApiOptions {
+    method: 'GET' | 'POST' | 'PATCH' | 'DELETE'
+    body: unknown,
+    query: object
+}
+
+export async function api<T>(path: string, options: ApiOptions): Promise<T> {
+    const url = new URL('/api' + path, API_URL)
+    const params = new URLSearchParams(
+        Object.entries(options.query ?? {})
+            .filter(([_, value]) => value != undefined && value != null && value != ' ')
+            .map(([key, value]) => [key, String(value)])
+    )
+    url.search = params.toString()
+}
