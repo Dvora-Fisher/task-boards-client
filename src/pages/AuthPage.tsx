@@ -1,4 +1,6 @@
+import {LoginForm} from "../features/auth/LoginForm";
+
 export function AuthPage()
 {
-    return <h1>התחברות</h1>
+    return <LoginForm/>
 }
