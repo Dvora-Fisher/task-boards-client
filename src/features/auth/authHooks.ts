@@ -1,8 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { tokenStore } from "../../api/client";
 import { logout, setCredentials } from "./authSlice";
-import { useAppDispatch } from "../../app/hooks";
-import { login, register, logout as logoutRequest }  from "./authApi" ;
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { login, register, logout as logoutRequest, getMe }  from "./authApi" ;
 
 export function useLogin() {
     const dispatch = useAppDispatch()
@@ -42,5 +42,16 @@ export function useLogout() {
             dispatch(logout())
             queryClient.clear()
         }
+    })
+}
+
+export function useMe(){
+    const token = useAppSelector((state) => state.auth.token)
+    const user = useAppSelector((state) => state.auth.user)
+    return useQuery({
+        queryKey: ['me'],
+        queryFn: getMe,
+        enabled: !!token && !user,
+        retry: false
     })
 }
