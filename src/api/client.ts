@@ -46,7 +46,7 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
     const headers: Record<string, string> = {}
     const token = tokenStore.get()
     if (token !== null) {
-        headers['Authorization'] = ` Bearer${token}`
+        headers['Authorization'] = `Bearer ${token}`
     }
     if (options.body !== undefined) {
         headers['Content-Type'] = 'application/json'
@@ -55,7 +55,7 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
         {
             method: options.method ?? 'GET',
             headers: headers,
-            body: options.body !== null ? JSON.stringify(options.body) : undefined
+            body: options.body !== undefined ? JSON.stringify(options.body) : undefined
         })
     //errors checking
     if (res.status === 204)
@@ -65,8 +65,7 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
         if (res.status === 401) {
             tokenStore.clear()
         }
-        throw new ApiError(res.status, json.error.code, json.error.code, json.error.details)
+        throw new ApiError(res.status, json.error.code, json.error.message, json.error.details)
     }
-    console.log(res)
     return json.data
 }
