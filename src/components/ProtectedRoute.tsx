@@ -1,9 +1,10 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
-import {tokenStore} from '../api/client'
+import {useAppSelector} from '../app/hooks'
+
 export function ProtectedRoute(){
-    const token = tokenStore.get()
+    const token = useAppSelector((state) => state.auth.token)
     const location = useLocation()
-    if(token == null)
+    if(!token)
         return <Navigate to="/login" replace state={{from : location}}></Navigate>
     return <Outlet/>
 }
