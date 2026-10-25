@@ -4,7 +4,7 @@ export const theme = createTheme(
     {
         direction: 'rtl',
         typography: {
-            fontFamily: '"Heebo",sans-serif,Arial'
+            fontFamily: '"Heebo",sans-serif'
         }
     },
     heIL
