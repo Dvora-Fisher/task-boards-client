@@ -21,7 +21,7 @@ export function LoginForm() {
         <Stack spacing={2}>
             <TextField {...register('email')} label='אימייל' type='email' autoComplete='email' error={!!formState.errors.email} helperText={formState.errors.email?.message} fullWidth></TextField>
             <TextField {...register('password')} label='סיסמה' type='password' autoComplete='current-password' error={!!formState.errors.password} helperText={formState.errors.password?.message} fullWidth></TextField>
-            {error && <Alert severity='error'>{errorMassage(error)}</Alert>}
+            {error && <Alert severity='error'>{errorMessage(error)}</Alert>}
             <Button type='submit' variant='contained' disabled={isPending}>התחברות</Button>
         </Stack>
     </Box>
@@ -29,7 +29,7 @@ export function LoginForm() {
 }
 
 
-function errorMassage(error: Error) {
+function errorMessage(error: Error) {
     if (error instanceof ApiError && error.code === 'INVALID_CREDENTIALS')
         return 'אימייל או סיסמה שגויים'
     return 'משהו השתבש, נסה שוב'

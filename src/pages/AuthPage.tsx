@@ -23,8 +23,9 @@ export function AuthPage() {
                 <Tab label='התחברות' value='/login' />
                 <Tab label='הרשמה' value='/register' />
             </Tabs>
-            <Box sx={{ mt: 3 }} />
-            {tab === '/login' ? <LoginForm /> : <RegisterForm />}
+            <Box sx={{ mt: 3 }}>
+                {tab === '/login' ? <LoginForm /> : <RegisterForm />}
+            </Box>
         </Paper>
     </Container>
 
