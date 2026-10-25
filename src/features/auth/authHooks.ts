@@ -1,9 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { login, register } from "./authApi";
 import { tokenStore } from "../../api/client";
 import { logout, setCredentials } from "./authSlice";
 import { useAppDispatch } from "../../app/hooks";
-import { logout as logoutRequest }  from "./authApi" ;
+import { login, register, logout as logoutRequest }  from "./authApi" ;
 
 export function useLogin() {
     const dispatch = useAppDispatch()
