@@ -1,7 +1,7 @@
 import {useTasks} from './tasksHooks'
 import { Box, Typography, Alert, CircularProgress } from '@mui/material'
 
-interface TaskListProps {
+export interface TaskListProps {
     boardId: string
 } 
 

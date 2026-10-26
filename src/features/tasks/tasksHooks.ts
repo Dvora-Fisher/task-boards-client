@@ -12,7 +12,7 @@ export function useTasks(boardId: string){
 export function useCreateTask(boardId: string){
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (input) => createTask(boardId, input!),
+        mutationFn: (input: CreateTaskInput) => createTask(boardId, input),
         onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks', boardId]})
     })
 }
