@@ -6,5 +6,5 @@ export function useBoards(params : BoardQueryParams = {}){
     return useQuery({
         queryKey: ['boards', params],
         queryFn: () => getBoards(params)
-    }), 
+    })
 }
