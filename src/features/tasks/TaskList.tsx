@@ -1,3 +1,4 @@
+import { da } from 'zod/v4/locales'
 import {useTasks} from './tasksHooks'
 import { Box, Typography, Alert, CircularProgress } from '@mui/material'
 
@@ -11,6 +12,8 @@ export function TaskList({boardId}: TaskListProps){
         return <CircularProgress size={24}/>
     if(isError)
         return <Alert>לא הצלחנו לטעון את המשימות</Alert>
+    if(data.items.length === 0)
+        return <Typography>אין עדיין משימות בלוח</Typography>
     return <Box>
         {data.items.map(task => <Typography key={task.id}>{task.title}</Typography>)}
     </Box>

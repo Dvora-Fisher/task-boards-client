@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { useBoard } from "../features/boards/boardsHooks"
 import { Typography, Box, CircularProgress, Alert, Link, Tabs, Tab } from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
-import { TaskList } from "../features/tasks/taskList"
+import { TaskList } from "../features/tasks/TaskList"
 import { useState } from "react"
 
 export function BoardPage() {
@@ -14,11 +14,11 @@ export function BoardPage() {
             <CircularProgress />
         </Box>
     if (isError)
-        return <Alert>הלוח לא נמצא או שאין לך גישה אליו</Alert>
+        return <Alert severity="error">הלוח לא נמצא או שאין לך גישה אליו</Alert>
     return <Box>
         <Link component={RouterLink} to='/'>לכל הלוחות</Link>
         <Typography variant="h4" component={'h1'}>{board.name}</Typography>
-        {board.description && <Typography color="text.secondary" />}
+        {board.description && <Typography color="text.secondary">{board.description}</Typography>}
         <Tabs value={view} onChange={(_, newView) => setView(newView)}>
             <Tab label='לוח זמנים' value='calendar'></Tab>
             <Tab label='רשימת משימות' value='list'></Tab>
