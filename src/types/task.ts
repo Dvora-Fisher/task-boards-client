@@ -43,4 +43,4 @@ export interface TasksQueryParams extends PaginationParams, Partial<DateRange> {
 
 }
 
-
+export type UpdateTaskInput = Partial<CreateTaskInput>

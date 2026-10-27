@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { CreateTaskInput } from "../../types"
+import type { CreateTaskInput, Task } from "../../types"
 
 export const taskSchema = z.object({
     title: z.string().trim().min(1, 'נא להזין כותרת').max(200, 'עד 200 תווים'),
@@ -18,6 +18,15 @@ export const taskSchema = z.object({
 
 export type TaskFormValues = z.infer<typeof taskSchema>
 
+export const emptyTaskValues : TaskFormValues = {
+    title: '',
+    description: '',
+    status: 'TODO',
+    priority: 'MEDIUM',
+    scheduleType: 'NONE',
+    dueDate: ''
+}
+
 export function toTaskInput(values: TaskFormValues): CreateTaskInput{
     return {
         title: values.title,
@@ -25,5 +34,16 @@ export function toTaskInput(values: TaskFormValues): CreateTaskInput{
         status: values.status,
         priority: values.priority,
         dueDate: values.scheduleType === 'DATE'? values.dueDate : null,
+    }
+}
+
+export function toFormValues(task: Task) : TaskFormValues{
+    return {
+        title : task.title,
+        description: task.description ?? '',
+        status: task.status,
+        priority: task.priority,
+        scheduleType: task.dueDate ? 'DATE' : 'NONE',
+        dueDate: task.dueDate ?? ''
     }
 }
