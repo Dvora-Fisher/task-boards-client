@@ -4,6 +4,7 @@ import { Typography, Box, CircularProgress, Alert, Link, Tabs, Tab, Button, Dial
 import { Link as RouterLink } from "react-router-dom"
 import { TaskList } from "../features/tasks/TaskList"
 import { useState } from "react"
+import { TaskForm } from "../features/tasks/TaskForm"
 
 export function BoardPage() {
     const { boardId } = useParams<{ boardId: string }>()
@@ -30,7 +31,9 @@ export function BoardPage() {
         </Box>
         <Dialog open={isCreateOpen} onClose={() => setIsCreateOpen(false)} fullWidth>
             <DialogTitle>משימה חדשה</DialogTitle>
-            <DialogContent>כאן יהיה הטופס</DialogContent>
+            <DialogContent>
+                <TaskForm boardId={board.id} onClose={() => setIsCreateOpen(false)}/>
+            </DialogContent>
         </Dialog>
     </Box>
 
