@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom"
 import { useBoard } from "../features/boards/boardsHooks"
-import { Typography, Box, CircularProgress, Alert, Link, Tabs, Tab, Button, Dialog, DialogTitle, DialogContent } from "@mui/material"
+import { Typography, Box, CircularProgress, Alert, Link, Tabs, Tab, Button} from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
 import { TaskList } from "../features/tasks/TaskList"
 import { useState } from "react"
-import { TaskForm } from "../features/tasks/TaskForm"
+import { TaskDialog } from "../features/tasks/TaskDialog"
+
 
 export function BoardPage() {
     const { boardId } = useParams<{ boardId: string }>()
@@ -27,14 +28,9 @@ export function BoardPage() {
             <Tab label='רשימת משימות' value='list'></Tab>
         </Tabs>
         <Box sx={{ mt: 3 }}>
-            { view === 'list'? <TaskList boardId={board.id} /> : <Typography>לוח שנה - בקרוב</Typography>}
+            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <Typography>לוח שנה - בקרוב</Typography>}
         </Box>
-        <Dialog open={isCreateOpen} onClose={() => setIsCreateOpen(false)} fullWidth>
-            <DialogTitle>משימה חדשה</DialogTitle>
-            <DialogContent>
-                <TaskForm boardId={board.id} onClose={() => setIsCreateOpen(false)}/>
-            </DialogContent>
-        </Dialog>
+        <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>setIsCreateOpen(false)}/>
     </Box>
 
 }

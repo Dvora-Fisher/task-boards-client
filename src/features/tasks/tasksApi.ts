@@ -18,3 +18,9 @@ export function updateTask(taskId: string, input: UpdateTaskInput){
         body: input,
     })
 }
+
+export function deleteTask(taskId: string){
+    return api<void>(`/tasks/${taskId}`, {
+        method: 'DELETE',
+    })
+}
