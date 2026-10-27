@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom"
 import { TaskList } from "../features/tasks/TaskList"
 import { useState } from "react"
 import { TaskDialog } from "../features/tasks/TaskDialog"
+import {BoardCalendar} from '../features/calendar/BoardCalendar'
 
 
 export function BoardPage() {
@@ -28,7 +29,7 @@ export function BoardPage() {
             <Tab label='רשימת משימות' value='list'></Tab>
         </Tabs>
         <Box sx={{ mt: 3 }}>
-            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <Typography>לוח שנה - בקרוב</Typography>}
+            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar/>}
         </Box>
         <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>setIsCreateOpen(false)}/>
     </Box>
