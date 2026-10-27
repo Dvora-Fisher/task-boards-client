@@ -1,5 +1,6 @@
 import {useTasks} from './tasksHooks'
-import { Box, Typography, Alert, CircularProgress } from '@mui/material'
+import { Typography, Alert, CircularProgress, Stack } from '@mui/material'
+import { TaskItem } from './TaskItem'
 
 export interface TaskListProps {
     boardId: string
@@ -13,7 +14,7 @@ export function TaskList({boardId}: TaskListProps){
         return <Alert severity='error'>לא הצלחנו לטעון את המשימות</Alert>
     if(data.items.length === 0)
         return <Typography>אין עדיין משימות בלוח</Typography>
-    return <Box>
-        {data.items.map(task => <Typography key={task.id}>{task.title}</Typography>)}
-    </Box>
+    return <Stack spacing={1.5}>
+        {data.items.map(task => <TaskItem key={task.id} task={task}/>)}
+    </Stack>
 }
