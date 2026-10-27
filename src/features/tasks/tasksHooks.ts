@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getTasks, createTask } from "./tasksApi";
-import type {CreateTaskInput} from '../../types/task'
+import { getTasks, createTask, updateTask } from "./tasksApi";
+import type {CreateTaskInput, UpdateTaskInput } from '../../types/task'
 
 export function useTasks(boardId: string){
     return useQuery({
@@ -13,6 +13,14 @@ export function useCreateTask(boardId: string){
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (input: CreateTaskInput) => createTask(boardId, input),
+        onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks', boardId]})
+    })
+}
+
+export function useUpdateTask(boardId: string){
+    const queryClient = useQueryClient()
+    return useMutation({
+        mutationFn: ({taskId,input}:{taskId: string, input: UpdateTaskInput}) => updateTask(taskId, input),
         onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks', boardId]})
     })
 }
