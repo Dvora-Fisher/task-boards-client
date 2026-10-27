@@ -1,9 +1,12 @@
 import { Outlet } from "react-router-dom";
-import {Navbar} from "./Navbar";
+import { Navbar } from "./Navbar";
+import { Container } from "@mui/material";
 
-export function Layout(){
+export function Layout() {
     return <>
-    <Navbar/>
-    <Outlet/>
+        <Navbar />
+        <Container maxWidth='md' sx={{ py: 3 }}>
+            <Outlet />
+        </Container>
     </>
 }
