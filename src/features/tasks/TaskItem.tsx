@@ -8,14 +8,15 @@ import { useDeleteTask } from "./tasksHooks"
 interface TaskItemProps {
     task: Task,
     canEdit: boolean,
-    onEdit: () => void
+    onEdit: () => void,
+    onDelete?: ()=>void
 }
 
-export function TaskItem({ task, canEdit, onEdit }: TaskItemProps) {
+export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
     const deleteTask = useDeleteTask(task.boardId)
     function handleDelete() {
-        if (window.confirm(`?${task.title} למחוק את המשימה:`))
-            deleteTask.mutate(task.id)
+        if (window.confirm(`למחוק את המשימה: ${task.title}`))
+            deleteTask.mutate(task.id, {onSuccess: onDelete})
     }
     return <Paper variant="outlined" sx={{ p: 2 }}>
         <Stack direction="row" sx={{justifyContent: 'space-between',alignItems: 'flex-start',}} spacing={1}>

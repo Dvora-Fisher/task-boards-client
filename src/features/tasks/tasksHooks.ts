@@ -1,40 +1,52 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getTasks, createTask, updateTask, deleteTask } from "./tasksApi";
-import type {CreateTaskInput, UpdateTaskInput } from '../../types/task'
+import { getTasks, createTask, updateTask, deleteTask, getTask } from "./tasksApi";
+import type { CreateTaskInput, UpdateTaskInput } from '../../types/task'
 
-export function useTasks(boardId: string){
+export function useTasks(boardId: string) {
     return useQuery({
         queryKey: ['tasks', boardId],
         queryFn: () => getTasks(boardId)
     })
 }
 
-export function useCreateTask(boardId: string){
+export function useTask(boardId: string, taskId: string) {
+    return useQuery({
+        queryKey: ['tasks', boardId, taskId],
+        queryFn: () => getTask(taskId)
+    })
+}
+
+export function useCreateTask(boardId: string) {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (input: CreateTaskInput) => createTask(boardId, input),
         onSuccess: () => Promise.all([
-            queryClient.invalidateQueries({queryKey: ['tasks', boardId]}),
-         queryClient.invalidateQueries({queryKey: ['calendar', boardId]})])
+            queryClient.invalidateQueries({ queryKey: ['tasks', boardId] }),
+            queryClient.invalidateQueries({ queryKey: ['calendar', boardId] })])
     })
 }
 
-export function useUpdateTask(boardId: string){
+export function useUpdateTask(boardId: string) {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: ({taskId,input}:{taskId: string, input: UpdateTaskInput}) => updateTask(taskId, input),
+        mutationFn: ({ taskId, input }: { taskId: string, input: UpdateTaskInput }) => updateTask(taskId, input),
         onSuccess: () => Promise.all([
-            queryClient.invalidateQueries({queryKey: ['tasks', boardId]}),
-         queryClient.invalidateQueries({queryKey: ['calendar', boardId]})])
+            queryClient.invalidateQueries({ queryKey: ['tasks', boardId] }),
+            queryClient.invalidateQueries({ queryKey: ['calendar', boardId] })])
     })
 }
 
-export function useDeleteTask(boardId: string){
+export function useDeleteTask(boardId: string) {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (taskId: string) => deleteTask(taskId),
-        onSuccess: () => Promise.all([
-            queryClient.invalidateQueries({queryKey: ['tasks', boardId]}),
-         queryClient.invalidateQueries({queryKey: ['calendar', boardId]})])
+        onSuccess: (_, taskId) => {
+            queryClient.removeQueries({
+                queryKey: ['tasks', boardId, taskId],
+            });
+            return Promise.all([
+                queryClient.invalidateQueries({ queryKey: ['tasks', boardId] }),
+                queryClient.invalidateQueries({ queryKey: ['calendar', boardId] })])
+        }
     })
 }

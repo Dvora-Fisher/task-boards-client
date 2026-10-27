@@ -5,6 +5,10 @@ export function getTasks(boardId: string){
     return api<Paginated<Task>>(`/boards/${boardId}/tasks`)
 }
 
+export function getTask(taskId: string){
+    return api<Task>(`/tasks/${taskId}`)
+}
+
 export function createTask(boardId: string, input: CreateTaskInput){
     return api<Task>(`/boards/${boardId}/tasks`, {
         method: 'POST',

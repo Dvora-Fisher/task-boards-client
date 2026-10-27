@@ -28,7 +28,7 @@ export function BoardPage() {
             <Tab label='רשימת משימות' value='list'></Tab>
         </Tabs>
         <Box sx={{ mt: 3 }}>
-            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id}/>}
+            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id}  canEdit={board.myAccess.canEdit}/>}
         </Box>
         <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>setIsCreateOpen(false)}/>
     </Box>
