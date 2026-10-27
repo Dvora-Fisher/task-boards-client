@@ -1,6 +1,5 @@
 import type { EventInput } from '@fullcalendar/react'
-import type { CalendarEvent, Reminder } from '../../types'
-import { Title } from '@mui/icons-material'
+import type { CalendarEvent } from '../../types'
 
 export interface EventColors {
     done: string,
