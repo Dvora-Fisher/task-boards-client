@@ -1,11 +1,12 @@
 import { useParams } from "react-router-dom"
 import { useBoard } from "../features/boards/boardsHooks"
-import { Typography, Box, CircularProgress, Alert, Link, Tabs, Tab, Button} from "@mui/material"
+import { Typography, Box, Alert, Link, Tabs, Tab, Button} from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
 import { TaskList } from "../features/tasks/TaskList"
 import { useState } from "react"
 import { TaskDialog } from "../features/tasks/TaskDialog"
 import {BoardCalendar} from '../features/calendar/BoardCalendar'
+import { CircularPending } from "../components/CircularPending"
 
 
 export function BoardPage() {
@@ -14,9 +15,7 @@ export function BoardPage() {
     const [isCreateOpen, setIsCreateOpen] = useState(false)
     const { data: board, isPending, isError } = useBoard(boardId!)
     if (isPending)
-        return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-            <CircularProgress />
-        </Box>
+        return <CircularPending/>
     if (isError)
         return <Alert severity="error">הלוח לא נמצא או שאין לך גישה אליו</Alert>
     return <Box>
@@ -29,7 +28,7 @@ export function BoardPage() {
             <Tab label='רשימת משימות' value='list'></Tab>
         </Tabs>
         <Box sx={{ mt: 3 }}>
-            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar/>}
+            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id}/>}
         </Box>
         <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>setIsCreateOpen(false)}/>
     </Box>

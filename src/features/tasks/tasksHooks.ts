@@ -13,7 +13,9 @@ export function useCreateTask(boardId: string){
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (input: CreateTaskInput) => createTask(boardId, input),
-        onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks', boardId]})
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({queryKey: ['tasks', boardId]}),
+         queryClient.invalidateQueries({queryKey: ['calendar', boardId]})])
     })
 }
 
@@ -21,7 +23,9 @@ export function useUpdateTask(boardId: string){
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: ({taskId,input}:{taskId: string, input: UpdateTaskInput}) => updateTask(taskId, input),
-        onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks', boardId]})
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({queryKey: ['tasks', boardId]}),
+         queryClient.invalidateQueries({queryKey: ['calendar', boardId]})])
     })
 }
 
@@ -29,6 +33,8 @@ export function useDeleteTask(boardId: string){
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (taskId: string) => deleteTask(taskId),
-        onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks', boardId]})
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({queryKey: ['tasks', boardId]}),
+         queryClient.invalidateQueries({queryKey: ['calendar', boardId]})])
     })
 }
