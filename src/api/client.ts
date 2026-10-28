@@ -1,5 +1,7 @@
 import type { ApiSuccess, ErrorCode, ApiErrorBody } from "../types"
 
+export const MAX_PAGE_SIZE = 100;
+
 const API_URL = import.meta.env.VITE_API_URL
 const TOKEN_KEY = 'accessToken'
 export const tokenStore = {

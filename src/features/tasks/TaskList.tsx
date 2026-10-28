@@ -23,6 +23,11 @@ export function TaskList({ boardId, canEdit }: TaskListProps) {
         <Stack spacing={1.5}>
             {data.items.map(task => <TaskItem key={task.id} task={task} canEdit={canEdit} onEdit={() => setEditingTask(task)} />)}
         </Stack>
-        {editingTask && <TaskDialog open boardId={boardId} task={editingTask} onClose={()=>setEditingTask(null)}/>}
+        {data.pagination.total > data.items.length && (
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                מוצגות {data.items.length} מתוך {data.pagination.total} משימות
+            </Typography>
+        )}
+        {editingTask && <TaskDialog open boardId={boardId} task={editingTask} onClose={() => setEditingTask(null)} />}
     </>
 }

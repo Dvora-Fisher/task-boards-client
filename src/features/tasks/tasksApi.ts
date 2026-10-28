@@ -1,8 +1,10 @@
-import {api} from '../../api/client'
+import {api, MAX_PAGE_SIZE} from '../../api/client'
 import type { Paginated, Task, CreateTaskInput, UpdateTaskInput } from '../../types'
 
 export function getTasks(boardId: string){
-    return api<Paginated<Task>>(`/boards/${boardId}/tasks`)
+    return api<Paginated<Task>>(`/boards/${boardId}/tasks`,{
+         query: { pageSize: MAX_PAGE_SIZE },
+    })
 }
 
 export function getTask(taskId: string){
