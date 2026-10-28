@@ -1,6 +1,6 @@
 import type { Board } from "../../types";
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { BoardForm } from './BoardForm';
+import { FormDialog } from '../../components/FormDialog'
 
 interface boardDialogProps{
     board?: Board,
@@ -9,10 +9,10 @@ interface boardDialogProps{
 }
 
 export function BoardDialog({board, open, onClose}: boardDialogProps){
-    return <Dialog open={open} onClose={onClose} fullWidth>
-        <DialogTitle>{board? 'עריכת לוח' : 'יצירת לוח'}</DialogTitle>
-        <DialogContent>
-            <BoardForm onClose={onClose} board={board}/>
-        </DialogContent>
-    </Dialog>
+    return <FormDialog
+        title={board? 'עריכת לוח' : 'יצירת לוח'}
+        open={open} onClose={onClose}
+        children={<BoardForm onClose={onClose} board={board}/>}>
+
+    </FormDialog>    
 }

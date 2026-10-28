@@ -1,14 +1,14 @@
 import { useCreateTask, useUpdateTask } from "./tasksHooks"
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Box, Stack, TextField, Button, Alert, MenuItem, ToggleButtonGroup, Typography, ToggleButton } from '@mui/material'
+import { Box, Stack, TextField, Alert, MenuItem, ToggleButtonGroup, Typography, ToggleButton } from '@mui/material'
 import { emptyTaskValues, taskSchema, toFormValues, toTaskInput, type TaskFormValues } from './taskSchemas'
 import { statusLabels, priorityLabels, scheduleLabels } from "./taskLabels"
 import type { Task, ScheduleType } from "../../types"
 import dayjs from 'dayjs'
 import { timeFormat } from '../../utils/timeFormat';
 import { getErrorMessage } from "../../utils/errorMessages"
-
+import {FormActions} from '../../components/FormActions'
 interface TaskFormProrps {
     boardId: string,
     onClose: () => void,
@@ -86,12 +86,13 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         helperText={errors.startAt?.message}
                         {...register('startAt', {
                             onChange: (e) => {
-                            const start: string = e.target.value;
-                            if(!start) return;
-                            const end = getValues('endAt')
-                            if(!end || !dayjs(end).isAfter(dayjs(start)))
-                                setValue('endAt', dayjs(start).add(1, 'hour').format(timeFormat), { shouldValidate: true })
-                        }}
+                                const start: string = e.target.value;
+                                if (!start) return;
+                                const end = getValues('endAt')
+                                if (!end || !dayjs(end).isAfter(dayjs(start)))
+                                    setValue('endAt', dayjs(start).add(1, 'hour').format(timeFormat), { shouldValidate: true })
+                            }
+                        }
                         )} />
 
                     <TextField type="datetime-local" label="שעת סיום" fullWidth
@@ -101,10 +102,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         {...register('endAt')} />
                 </Box>
             }
-            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-                <Button onClick={onClose}>ביטול</Button>
-                <Button type="submit" variant="contained" disabled={isPending}>{isPending ? 'שומר...' : 'שמירה'}</Button>
-            </Box>
+            <FormActions onCancel={onClose} isPending={isPending} />
         </Stack>
     </Box>
 

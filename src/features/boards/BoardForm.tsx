@@ -1,12 +1,14 @@
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Stack, TextField, Button, Alert, MenuItem, FormControlLabel, Switch } from '@mui/material'
+import { Stack, TextField, Alert, MenuItem, FormControlLabel, Switch } from '@mui/material'
 import type { Board } from "../../types"
 import { useCreateBoard } from './boardsHooks'
 import { boardSchema, emptyBoardValues, toBoardFormValues, toTBoardInput, type BoardFormValues } from './boardSchemas'
 import { useUpdateBoard } from './boardsHooks'
 import { visibilityLabels } from './boardLabels'
 import { useNavigate } from 'react-router-dom'
+import { FormActions } from '../../components/FormActions'
+
 interface BoardFormProrps {
     board?: Board,
     onClose: () => void,
@@ -80,13 +82,7 @@ export function BoardForm({ board, onClose }: BoardFormProrps) {
                     )}
                 />
             )}
-
-            <Stack direction="row" spacing={1} sx={{ justifyContent: 'flex-end' }}>
-                <Button onClick={onClose} disabled={isPending}>ביטול</Button>
-                <Button type="submit" variant="contained" disabled={isPending}>
-                    {isPending ? 'שומרת...' : board ? 'שמירה' : 'יצירה'}
-                </Button>
-            </Stack>
+            <FormActions onCancel={onClose} isPending={isPending} submitLabel={isPending ? 'שומרת...' : board ? 'שמירה' : 'יצירה'}/>
         </Stack>
     )
 
