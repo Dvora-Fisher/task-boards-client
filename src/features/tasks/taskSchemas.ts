@@ -87,7 +87,7 @@ export function toFormValues(task: Task): TaskFormValues {
         priority: task.priority,
         scheduleType: task.scheduleType,
         dueDate: task.dueDate ?? '',
-        startAt: dayjs(task.startAt).format(timeFormat) ?? '',
-        endAt: dayjs(task.endAt).format(timeFormat) ?? '',
+        startAt: task.startAt ? dayjs(task.startAt).format(timeFormat) : '',
+        endAt: task.endAt ? dayjs(task.endAt).format(timeFormat) : '',
     }
 }
