@@ -40,13 +40,8 @@ export function useDeleteReminder(boardId: string) {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (reminderId: string) => deleteReminder(reminderId),
-        onSuccess: (_, reminderId) => {
-            queryClient.removeQueries({
-                queryKey: ['reminders', boardId, reminderId],
-            });
-            return Promise.all([
-                queryClient.invalidateQueries({ queryKey: ['reminders', boardId] }),
-                queryClient.invalidateQueries({ queryKey: ['calendar', boardId] })])
-        }
+        onSuccess: () => Promise.all([
+            queryClient.invalidateQueries({ queryKey: ['reminders', boardId], exact: true }),
+            queryClient.invalidateQueries({ queryKey: ['calendar', boardId] })])
     })
 }

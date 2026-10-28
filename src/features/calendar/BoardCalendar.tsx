@@ -9,19 +9,25 @@ import heLocale from '@fullcalendar/react/locales/he'
 import { useState } from 'react'
 import { Alert, LinearProgress, useTheme } from '@mui/material'
 import { useCalendar } from './calendarHooks'
-import type { DateRange } from '../../types'
+import type { CalendarEvent, DateRange } from '../../types'
 import { toCalendarEvents } from './calendarEvents'
 import type { EventClickInfo } from '@fullcalendar/react';
 import { TaskDetailsDialog } from '../tasks/TaskDetailsDialog';
+import { ReminderDetailsDialog } from '../reminders/ReminderDetailsDialog';
 
 interface BoardCalendarProps {
     boardId: string,
     canEdit: boolean
 }
 
+interface SelectedEvent {
+    type: CalendarEvent['type'],
+    id: string
+}
+
 export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
     const [range, setRange] = useState<DateRange | null>(null)
-    const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null)
+    const [selected, setSelected] = useState<SelectedEvent | null>(null)
     const theme = useTheme()
     const colors = {
         task: theme.palette.primary.main,
@@ -29,11 +35,14 @@ export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
         done: theme.palette.grey[400],
     }
     const { isFetching, isError, data } = useCalendar(boardId, range)
-    function handleEventClick(info: EventClickInfo){
-        const {type, entityId} = info.event.extendedProps
-        if(type === 'TASK')
-            setSelectedTaskId(entityId)
+    function handleEventClick(info: EventClickInfo) {
+        const { type, entityId } = info.event.extendedProps
+        setSelected({ type, id: entityId })
     }
+    function handleClose() {
+        setSelected(null)
+    }
+
     return <>
         {isFetching && <LinearProgress sx={{ mb: 1 }} />}
         {isError && <Alert severity="error" sx={{ mb: 2 }}>לא הצלחנו לטעון את לוח המשימות</Alert>}
@@ -43,9 +52,12 @@ export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
             headerToolbar={{ start: 'prev,next today', end: 'dayGridMonth,timeGridWeek', center: 'title' }}
             locale={heLocale}
             datesSet={(info) => setRange({ from: info.start.toISOString(), to: info.end.toISOString() })}
-            events={data? toCalendarEvents(data.events, colors) : []}
+            events={data ? toCalendarEvents(data.events, colors) : []}
             eventClick={handleEventClick}
-            />
-        {selectedTaskId && <TaskDetailsDialog boardId={boardId} taskId={selectedTaskId} canEdit={canEdit} onClose={()=>setSelectedTaskId(null)}/>}
+        />
+        {selected?.type === 'TASK' &&
+            <TaskDetailsDialog boardId={boardId} taskId={selected.id} canEdit={canEdit} onClose={handleClose} />}
+        {selected?.type === 'REMINDER' &&
+            <ReminderDetailsDialog boardId={boardId} reminderId={selected.id} canEdit={canEdit} onClose={handleClose} />}
     </>
 }
