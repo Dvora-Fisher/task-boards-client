@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useBoard } from "../features/boards/boardsHooks"
 import { Typography, Box, Alert, Link, Tabs, Tab, Button} from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
@@ -7,12 +7,14 @@ import { useState } from "react"
 import { TaskDialog } from "../features/tasks/TaskDialog"
 import {BoardCalendar} from '../features/calendar/BoardCalendar'
 import { CircularPending } from "../components/CircularPending"
+import { BoardDialog } from "../features/boards/BoardDialog"
 
 
 export function BoardPage() {
     const { boardId } = useParams<{ boardId: string }>()
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
     const [isCreateOpen, setIsCreateOpen] = useState(false)
+    const [isEditOpen, setIsEditOpen] = useState(false)
     const { data: board, isPending, isError } = useBoard(boardId!)
     if (isPending)
         return <CircularPending/>
@@ -22,6 +24,7 @@ export function BoardPage() {
         <Link component={RouterLink} to='/'>לכל הלוחות</Link>
         <Typography variant="h4" component={'h1'}>{board.name}</Typography>
         {board.description && <Typography color="text.secondary">{board.description}</Typography>}
+        {board.myAccess.canManage && <Button variant="contained" onClick={() => setIsEditOpen(true)}>עריכת הלוח</Button>}
         {board.myAccess.canEdit && <Button variant="contained" onClick={() => setIsCreateOpen(true)}>משימה חדשה</Button>}
         <Tabs value={view} onChange={(_, newView) => setView(newView)}>
             <Tab label='לוח זמנים' value='calendar'></Tab>
@@ -30,7 +33,12 @@ export function BoardPage() {
         <Box sx={{ mt: 3 }}>
             { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id}  canEdit={board.myAccess.canEdit}/>}
         </Box>
-        <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>setIsCreateOpen(false)}/>
+        <BoardDialog open={isEditOpen} board={board} onClose={()=>setIsEditOpen(false)}/>
+        <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>{
+            setIsCreateOpen(false)
+            const navigate = useNavigate()
+            navigate(`boards/${board.id}`)
+            }}/>
     </Box>
 
 }

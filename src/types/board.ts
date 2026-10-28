@@ -35,12 +35,10 @@ export interface CreateBoardInput{
     isOpen? : boolean
 }
 
+export type UpdateBoardInput = Partial<CreateBoardInput>;
+
 export interface BoardQueryParams extends PaginationParams{
     visibility? : BoardVisibility;
     search? : string;
     role? : 'owner' | 'member'
 }
-
-
-
-
