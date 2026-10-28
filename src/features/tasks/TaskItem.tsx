@@ -1,25 +1,26 @@
 import { Paper, Stack, Typography, Chip, IconButton } from "@mui/material"
-import { EditOutlined, DeleteOutlined } from '@mui/icons-material'
+import { EditOutlined, DeleteOutlined, AccessTimeOutlined } from '@mui/icons-material'
 import type { Task } from "../../types"
 import { statusLabels, statusColors, priorityLabels } from './taskLabels'
 import dayjs from 'dayjs'
 import { useDeleteTask } from "./tasksHooks"
+import { formatTimeRange } from '../../utils/timeFormat'
 
 interface TaskItemProps {
     task: Task,
     canEdit: boolean,
     onEdit: () => void,
-    onDelete?: ()=>void
+    onDelete?: () => void
 }
 
 export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
     const deleteTask = useDeleteTask(task.boardId)
     function handleDelete() {
         if (window.confirm(`למחוק את המשימה: ${task.title}`))
-            deleteTask.mutate(task.id, {onSuccess: onDelete})
+            deleteTask.mutate(task.id, { onSuccess: onDelete })
     }
     return <Paper variant="outlined" sx={{ p: 2 }}>
-        <Stack direction="row" sx={{justifyContent: 'space-between',alignItems: 'flex-start',}} spacing={1}>
+        <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', }} spacing={1}>
             <Typography variant="subtitle1">{task.title}</Typography>
             <Stack direction="row" spacing={0.5}>
                 {canEdit && <IconButton size="small" aria-label="✏️" onClick={onEdit}>
@@ -50,6 +51,15 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
                     size="small"
                     variant="outlined"
                     label={dayjs(task.dueDate).format('DD/MM/YYYY')}
+                />
+            )}
+            {task.startAt && task.endAt &&(
+                <Chip
+                    size="small"
+                    variant="outlined"
+                    icon={<AccessTimeOutlined />}
+                    color='primary'
+                    label={formatTimeRange(task.startAt, task.endAt)}
                 />
             )}
         </Stack>
