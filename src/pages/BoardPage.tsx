@@ -7,12 +7,15 @@ import { TaskDialog } from "../features/tasks/TaskDialog"
 import { BoardCalendar } from '../features/calendar/BoardCalendar'
 import { CircularPending } from "../components/CircularPending"
 import { BoardDialog } from "../features/boards/BoardDialog"
-
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import { MembersDialog } from '../features/members/MembersDialog';
+import { useParams } from "react-router-dom"
 
 export function BoardPage() {
     const { boardId } = useParams<{ boardId: string }>()
     const [view, setView] = useState<'list' | 'calendar'>('calendar')
     const [isCreateOpen, setIsCreateOpen] = useState(false)
+    const [isMembersOpen, setIsMembersOpen] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
     const { data: board, isPending, isError } = useBoard(boardId!)
     if (isPending)
@@ -24,6 +27,11 @@ export function BoardPage() {
         <Typography variant="h4" component={'h1'}>{board.name}</Typography>
         {board.description && <Typography color="text.secondary">{board.description}</Typography>}
         {board.myAccess.canManage && <Button variant="contained" onClick={() => setIsEditOpen(true)}>עריכת הלוח</Button>}
+        {board.visibility === 'SHARED' && (
+            <Button variant="outlined" startIcon={<GroupOutlinedIcon />} onClick={() => setIsMembersOpen(true)}>
+                חברות בלוח ({board.memberCount})
+            </Button>
+        )}
         {board.myAccess.canEdit && <Button variant="contained" onClick={() => setIsCreateOpen(true)}>משימה חדשה</Button>}
         <Tabs value={view} onChange={(_, newView) => setView(newView)}>
             <Tab label='לוח זמנים' value='calendar'></Tab>
@@ -32,6 +40,12 @@ export function BoardPage() {
         <Box sx={{ mt: 3 }}>
             {view === 'list' ? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id} canEdit={board.myAccess.canEdit} />}
         </Box>
+        <MembersDialog
+            open={isMembersOpen}
+            onClose={() => setIsMembersOpen(false)}
+            boardId={board.id}
+            canManage={board.myAccess.canManage}
+        />
         <BoardDialog open={isEditOpen} board={board} onClose={() => setIsEditOpen(false)} />
         <TaskDialog open={isCreateOpen} boardId={board.id} onClose={() => { setIsCreateOpen(false) }} />
     </Box>
