@@ -40,13 +40,8 @@ export function useDeleteTask(boardId: string) {
     const queryClient = useQueryClient()
     return useMutation({
         mutationFn: (taskId: string) => deleteTask(taskId),
-        onSuccess: (_, taskId) => {
-            queryClient.removeQueries({
-                queryKey: ['tasks', boardId, taskId],
-            });
-            return Promise.all([
-                queryClient.invalidateQueries({ queryKey: ['tasks', boardId] }),
+        onSuccess: () => Promise.all([
+                queryClient.invalidateQueries({ queryKey: ['tasks', boardId], exact:true }),
                 queryClient.invalidateQueries({ queryKey: ['calendar', boardId] })])
-        }
     })
 }
