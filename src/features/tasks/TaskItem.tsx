@@ -22,7 +22,7 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
         <Stack direction="row" sx={{justifyContent: 'space-between',alignItems: 'flex-start',}} spacing={1}>
             <Typography variant="subtitle1">{task.title}</Typography>
             <Stack direction="row" spacing={0.5}>
-                {canEdit && task.scheduleType !== 'TIMED' && <IconButton size="small" aria-label="✏️" onClick={onEdit}>
+                {canEdit && <IconButton size="small" aria-label="✏️" onClick={onEdit}>
                     <EditOutlined fontSize="small" />
                 </IconButton>}
                 {canEdit && <IconButton size="small" color="error" aria-label="🗑️" onClick={handleDelete} disabled={deleteTask.isPending}>

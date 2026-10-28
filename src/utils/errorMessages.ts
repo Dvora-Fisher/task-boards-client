@@ -5,7 +5,8 @@ export const errorMessages: Record<string, string> = {
     ALREADY_MEMBER: 'המשתמש כבר חבר בלוח',
     CANNOT_ADD_OWNER: 'ניסית לרשום שוב את בעל הלוח',
     INVALID_CREDENTIALS: 'אימייל או סיסמה שגויים',
-    EMAIL_TAKEN: 'האימייל כבר רשום'
+    EMAIL_TAKEN: 'האימייל כבר רשום',
+    TIME_CONFLICT: "השעה הזו חופפת למשימה אחרת שלך (גם בלוח אחר). בחרי שעה אחרת"
 }
 
 export function getErrorMessage(error: unknown, fallback: string) : string{

@@ -5,6 +5,9 @@ import { Box, Stack, TextField, Button, Alert, MenuItem, ToggleButtonGroup, Typo
 import { emptyTaskValues, taskSchema, toFormValues, toTaskInput, type TaskFormValues } from './taskSchemas'
 import { statusLabels, priorityLabels, scheduleLabels } from "./taskLabels"
 import type { Task, ScheduleType } from "../../types"
+import dayjs from 'dayjs'
+import { timeFormat } from '../../utils/timeFormat';
+import { getErrorMessage } from "../../utils/errorMessages"
 
 interface TaskFormProrps {
     boardId: string,
@@ -17,7 +20,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
     const updateTask = useUpdateTask(boardId)
     const isPending = createTask.isPending || updateTask.isPending
     const isError = createTask.isError || updateTask.isError
-    const { register, control, handleSubmit, formState: { errors }, watch } = useForm<TaskFormValues>({
+    const { register, control, handleSubmit, formState: { errors }, watch, setValue, getValues } = useForm<TaskFormValues>({
         resolver: zodResolver(taskSchema),
         defaultValues: task ? toFormValues(task) : emptyTaskValues
     });
@@ -29,10 +32,11 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
         else
             createTask.mutate(input, { onSuccess: onClose })
     }
+    const error = createTask.error ?? updateTask.error
 
     return <Box component='form' noValidate onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2} sx={{ pt: 1 }}>
-            {isError && <Alert severity="error">לא הצלחנו לשמור את המשימה, נסה שוב</Alert>}
+            {isError && <Alert severity="error">{getErrorMessage(error, 'לא הצלחנו לשמור את המשימה, נסה שוב')}</Alert>}
             <TextField {...register('title')} label='כותרת המשימה' error={!!errors.title} helperText={errors.title?.message} autoFocus></TextField>
             <TextField {...register('description')} label='תיאור' multiline minRows={3}></TextField>
             <Controller name="status" control={control} render={
@@ -80,7 +84,15 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         slotProps={{ inputLabel: { shrink: true } }}
                         error={!!errors.startAt}
                         helperText={errors.startAt?.message}
-                        {...register('startAt')} />
+                        {...register('startAt', {
+                            onChange: (e) => {
+                            const start: string = e.target.value;
+                            if(!start) return;
+                            const end = getValues('endAt')
+                            if(!end || !dayjs(end).isAfter(dayjs(start)))
+                                setValue('endAt', dayjs(start).add(1, 'hour').format(timeFormat), { shouldValidate: true })
+                        }}
+                        )} />
 
                     <TextField type="datetime-local" label="שעת סיום" fullWidth
                         slotProps={{ inputLabel: { shrink: true } }}
