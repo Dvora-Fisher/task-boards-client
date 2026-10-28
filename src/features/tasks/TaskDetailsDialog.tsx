@@ -18,7 +18,7 @@ export function TaskDetailsDialog({ boardId, taskId, canEdit, onClose }: TaskDet
     const { data: task, error } = useTask(boardId, taskId)
     let content: ReactNode
     if (!task && error)
-        content = content = <Alert severity="error">{error?.message ?? 'לא הצלחנו לטעון את המשימה'}</Alert>;
+        content = <Alert severity="error">{error?.message ?? 'לא הצלחנו לטעון את המשימה'}</Alert>;
     else if (!task)
         content = <CircularPending />
     else if (isEditing)

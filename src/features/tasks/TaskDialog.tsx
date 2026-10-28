@@ -9,8 +9,8 @@ interface taskDialogProps {
 export function TaskDialog({ open, onClose, boardId, task }: taskDialogProps) {
     return <FormDialog
         title={task ? 'עריכת משימה' : 'משימה חדשה'}
-        open={open} onClose={onClose}
-        children={<TaskForm boardId={boardId} task={task} onClose={onClose} />}>
-
+        open={open} onClose={onClose}>
+            
+        <TaskForm boardId={boardId} task={task} onClose={onClose} />
     </FormDialog>
 }

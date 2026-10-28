@@ -1,5 +1,7 @@
 import type {Audience, UUID, ISODateTime, BaseEntity, PaginationParams, DateRange } from './common'
 import type { UserSummary } from './user';
+
+
 export interface Reminder extends BaseEntity {
   boardId: UUID;
   title: string;
@@ -21,3 +23,5 @@ export interface CreateReminderInput{
 export interface ReminderQueryParams extends PaginationParams, Partial<DateRange>{
     search? : string
 }
+
+export type UpdateReminderInput =  Partial<CreateReminderInput>

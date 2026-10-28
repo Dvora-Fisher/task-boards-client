@@ -10,6 +10,9 @@ import { BoardDialog } from "../features/boards/BoardDialog"
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import { MembersDialog } from '../features/members/MembersDialog';
 import { useParams } from "react-router-dom"
+import { ReminderDialog } from "../features/reminders/ReminderDialog"
+import { NotificationAddOutlined } from '@mui/icons-material';
+
 
 export function BoardPage() {
     const { boardId } = useParams<{ boardId: string }>()
@@ -17,6 +20,7 @@ export function BoardPage() {
     const [isCreateOpen, setIsCreateOpen] = useState(false)
     const [isMembersOpen, setIsMembersOpen] = useState(false)
     const [isEditOpen, setIsEditOpen] = useState(false)
+    const [isReminderDialogOpen, setIsReminderDialogOpen] = useState(false)
     const { data: board, isPending, isError } = useBoard(boardId!)
     if (isPending)
         return <CircularPending />
@@ -33,6 +37,7 @@ export function BoardPage() {
             </Button>
         )}
         {board.myAccess.canEdit && <Button variant="contained" onClick={() => setIsCreateOpen(true)}>משימה חדשה</Button>}
+        {board.myAccess.canEdit && <Button variant="outlined" startIcon={<NotificationAddOutlined />} onClick={() => setIsReminderDialogOpen(true)}>תזכורת חדשה</Button>}
         <Tabs value={view} onChange={(_, newView) => setView(newView)}>
             <Tab label='לוח זמנים' value='calendar'></Tab>
             <Tab label='רשימת משימות' value='list'></Tab>
@@ -48,6 +53,7 @@ export function BoardPage() {
         />
         <BoardDialog open={isEditOpen} board={board} onClose={() => setIsEditOpen(false)} />
         <TaskDialog open={isCreateOpen} boardId={board.id} onClose={() => { setIsCreateOpen(false) }} />
+           <ReminderDialog open={isReminderDialogOpen} onClose= {() => setIsReminderDialogOpen(false)} boardId={board.id}/>
     </Box>
 
 }

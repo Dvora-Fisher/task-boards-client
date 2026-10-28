@@ -8,6 +8,7 @@ import { useUpdateBoard } from './boardsHooks'
 import { visibilityLabels } from './boardLabels'
 import { useNavigate } from 'react-router-dom'
 import { FormActions } from '../../components/FormActions'
+import { getErrorMessage } from '../../utils/errorMessages'
 
 interface BoardFormProrps {
     board?: Board,
@@ -36,7 +37,7 @@ export function BoardForm({ board, onClose }: BoardFormProrps) {
     return (
         <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2} sx={{ pt: 1 }}>
             {isError && (
-                <Alert severity="error">לא הצלחנו לשמור את הלוח, נסה שוב</Alert>
+                <Alert severity="error">{getErrorMessage(createBoard.error ?? updateBoard.error, 'לא הצלחנו לשמור את הלוח, נסה שוב')}</Alert>
             )}
 
             <TextField
@@ -82,7 +83,7 @@ export function BoardForm({ board, onClose }: BoardFormProrps) {
                     )}
                 />
             )}
-            <FormActions onCancel={onClose} isPending={isPending} submitLabel={isPending ? 'שומרת...' : board ? 'שמירה' : 'יצירה'}/>
+            <FormActions onCancel={onClose} isPending={isPending}/>
         </Stack>
     )
 
