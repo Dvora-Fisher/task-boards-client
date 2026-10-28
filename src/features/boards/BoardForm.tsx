@@ -28,7 +28,7 @@ export function BoardForm({ board, onClose }: BoardFormProrps) {
         if (board)
             updateBoard.mutate({ boardId: board.id, input }, { onSuccess: onClose })
         else
-            createBoard.mutate(input, { onSuccess: ({ id }) => navigate(`boards/${id}`) })
+            createBoard.mutate(input, { onSuccess: ({ id }) => navigate(`/boards/${id}`) })
     }
 
     return (

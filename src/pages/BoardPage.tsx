@@ -1,11 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom"
 import { useBoard } from "../features/boards/boardsHooks"
-import { Typography, Box, Alert, Link, Tabs, Tab, Button} from "@mui/material"
+import { Typography, Box, Alert, Link, Tabs, Tab, Button } from "@mui/material"
 import { Link as RouterLink } from "react-router-dom"
 import { TaskList } from "../features/tasks/TaskList"
 import { useState } from "react"
 import { TaskDialog } from "../features/tasks/TaskDialog"
-import {BoardCalendar} from '../features/calendar/BoardCalendar'
+import { BoardCalendar } from '../features/calendar/BoardCalendar'
 import { CircularPending } from "../components/CircularPending"
 import { BoardDialog } from "../features/boards/BoardDialog"
 
@@ -17,7 +16,7 @@ export function BoardPage() {
     const [isEditOpen, setIsEditOpen] = useState(false)
     const { data: board, isPending, isError } = useBoard(boardId!)
     if (isPending)
-        return <CircularPending/>
+        return <CircularPending />
     if (isError)
         return <Alert severity="error">הלוח לא נמצא או שאין לך גישה אליו</Alert>
     return <Box>
@@ -31,14 +30,10 @@ export function BoardPage() {
             <Tab label='רשימת משימות' value='list'></Tab>
         </Tabs>
         <Box sx={{ mt: 3 }}>
-            { view === 'list'? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id}  canEdit={board.myAccess.canEdit}/>}
+            {view === 'list' ? <TaskList boardId={board.id} canEdit={board.myAccess.canEdit} /> : <BoardCalendar boardId={board.id} canEdit={board.myAccess.canEdit} />}
         </Box>
-        <BoardDialog open={isEditOpen} board={board} onClose={()=>setIsEditOpen(false)}/>
-        <TaskDialog open={isCreateOpen} boardId={board.id} onClose={()=>{
-            setIsCreateOpen(false)
-            const navigate = useNavigate()
-            navigate(`boards/${board.id}`)
-            }}/>
+        <BoardDialog open={isEditOpen} board={board} onClose={() => setIsEditOpen(false)} />
+        <TaskDialog open={isCreateOpen} boardId={board.id} onClose={() => { setIsCreateOpen(false) }} />
     </Box>
 
 }
