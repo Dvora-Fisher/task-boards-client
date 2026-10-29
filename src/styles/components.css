@@ -222,6 +222,17 @@
   color: var(--terracotta);
 }
 
+.app-bar__link,
+.app-bar .MuiButton-root { white-space: nowrap; }
+
+/* מסך בינוני: הקישורים מוצגים כאייקונים, והשם – שם פרטי */
+@media (max-width: 900px) {
+  .app-bar__link { padding: 8px 10px; }
+  .app-bar__link-text { display: none; }
+  .app-bar__user-name { display: none; }
+  .app-bar__user-first { display: block; }
+}
+
 @media (max-width: 600px) {
   .app-bar .MuiToolbar-root { min-height: 62px; gap: 6px; }
   .app-bar__brand { padding: 4px 8px 4px 6px; }

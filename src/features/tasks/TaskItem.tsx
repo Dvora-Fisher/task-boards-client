@@ -1,5 +1,5 @@
-import { Stack, Typography, Chip, IconButton, Tooltip } from "@mui/material"
-import { EditOutlined, DeleteOutlined, AccessTimeOutlined, EventOutlined, CheckCircle, LockOutlined, PersonOutlineOutlined } from '@mui/icons-material'
+import { Stack, Typography, Chip, IconButton, Tooltip, Avatar } from "@mui/material"
+import { EditOutlined, DeleteOutlined, AccessTimeOutlined, EventOutlined, CheckCircle, LockOutlined } from '@mui/icons-material'
 import type { Task } from "../../types"
 import { statusLabels, priorityLabels } from './taskLabels'
 import dayjs from 'dayjs'
@@ -7,6 +7,7 @@ import { useState } from "react"
 import { useDeleteTask } from "./tasksHooks"
 import { formatTimeRange } from '../../utils/timeFormat'
 import { ConfirmDialog } from "../../components/ConfirmDialog"
+import { avatarToneFor, initials } from '../../utils/noteStyle'
 
 interface TaskItemProps {
     task: Task,
@@ -28,7 +29,7 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
     function handleDelete() {
         deleteTask.mutate(task.id, { onSuccess: () => { setIsConfirmOpen(false); onDelete?.() } })
     }
-    return <article className={`task-note note note--${statusTone[task.status]}`} data-status={task.status}>
+    return <article className={`task-note note note--${statusTone[task.status]}`} data-status={task.status} data-audience={task.audience}>
         <Stack direction="row" sx={{ justifyContent: 'space-between', alignItems: 'flex-start', }} spacing={1}>
             <Typography variant="subtitle1" component="h3" className="task-note__title">
                 {task.status === 'DONE' && <CheckCircle className="task-note__check" fontSize="small" />}
@@ -73,10 +74,10 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
                     label={formatTimeRange(task.startAt, task.endAt)}
                 />
             )}
-                        {task.audience === 'SELECTED' && (
+            {task.audience === 'SELECTED' && (
                 <Chip
                     size="small"
-                    className="tag tag--view"
+                    className="tag tag--private"
                     icon={<LockOutlined />}
                     label="פרטית"
                 />
@@ -85,8 +86,8 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
                 <Chip
                     key={user.id}
                     size="small"
-                    className="tag tag--plain"
-                    icon={<PersonOutlineOutlined />}
+                    className="tag tag--person"
+                    avatar={<Avatar className={`avatar-tone-${avatarToneFor(user.id)}`}>{initials(user.name)}</Avatar>}
                     label={user.name}
                 />
             ))}

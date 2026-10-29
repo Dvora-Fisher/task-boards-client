@@ -54,16 +54,17 @@ export function SchedulingSuggestions({ boardId, assignedUserId, onSelect }: Sch
     }
 
     if (!isOpen)
-        return <Button size="small" startIcon={<TipsAndUpdatesOutlined />} onClick={() => setIsOpen(true)} sx={{ alignSelf: 'flex-start' }}>
+        return <Button size="small" className="schedule-finder__open" startIcon={<TipsAndUpdatesOutlined />} onClick={() => setIsOpen(true)} sx={{ alignSelf: 'flex-start' }}>
             הצעות לזמן פנוי
         </Button>
 
     return <Box
+        className="schedule-finder"
         sx={{ p: 2, border: 1, borderColor: 'divider', borderRadius: 2 }}
    
         onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSearch() } }}
     >
-        <Typography variant="subtitle2" sx={{ mb: 1.5 }}>חיפוש זמן פנוי</Typography>
+        <Typography variant="subtitle2" className="schedule-finder__title" sx={{ mb: 1.5 }}>חיפוש זמן פנוי</Typography>
 
         {/* שתי עמודות: יום + משך בשורה הראשונה, טווח השעות בשנייה */}
         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
@@ -103,6 +104,7 @@ export function SchedulingSuggestions({ boardId, assignedUserId, onSelect }: Sch
                         <Chip
                             key={slot.startAt}
                             label={formatTimeRange(slot.startAt, slot.endAt)}
+                            className="slot-chip"
                             color="primary"
                             variant="outlined"
                             clickable

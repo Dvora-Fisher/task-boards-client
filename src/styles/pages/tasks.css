@@ -157,3 +157,114 @@
 
 /* בתוך חלון פרטים – הפתק ישר ובלי הופעה מדורגת */
 .MuiDialog-paper .note { rotate: 0deg; }
+
+/* ---------------- שיוך משימות ומשימות פרטיות ---------------- */
+
+/* תגית "פרטית" – גוון פחם עדין, שונה מ"צפייה בלבד" */
+.tag--private.MuiChip-root {
+  color: #2E4352;
+  background: #DFE5EA;
+}
+
+/* משויכת: תגית עם עיגול ראשי תיבות בצבע של אותה משתמשת */
+.tag--person.MuiChip-root {
+  padding-inline-start: 2px;
+  background: rgb(255 253 248 / 0.85);
+}
+.tag--person .MuiChip-avatar {
+  width: 20px;
+  height: 20px;
+  margin-inline: 2px -2px;
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+/* משימה פרטית: מסגרת מקווקוות עדינה בתוך הפתק, כמו פתק "אישי" */
+.task-note[data-audience="SELECTED"] {
+  box-shadow:
+    inset 0 0 0 1.5px rgb(255 253 248 / 0.9),
+    inset 0 0 0 3px rgb(46 67 82 / 0.16),
+    var(--shadow-note);
+}
+.note-grid .task-note[data-audience="SELECTED"]:hover {
+  box-shadow:
+    inset 0 0 0 1.5px rgb(255 253 248 / 0.9),
+    inset 0 0 0 3px rgb(46 67 82 / 0.16),
+    var(--shadow-note-lift);
+}
+
+/* בחירת משויכות בטופס (Autocomplete) */
+.MuiAutocomplete-tag.MuiChip-root {
+  background: var(--terracotta-soft);
+  color: #8E3F26;
+  font-weight: 600;
+}
+.MuiAutocomplete-tag .MuiChip-deleteIcon { color: rgb(142 63 38 / 0.55); }
+.MuiAutocomplete-tag .MuiChip-deleteIcon:hover { color: #8E3F26; }
+.MuiAutocomplete-paper {
+  border-radius: 12px !important;
+  border: 1px solid rgb(140 106 67 / 0.16);
+  box-shadow: var(--shadow-note) !important;
+}
+.MuiAutocomplete-option[aria-selected="true"] { background-color: rgb(194 96 63 / 0.10) !important; }
+
+/* ---------------- הצעות לזמן פנוי ---------------- */
+
+.schedule-finder__open.MuiButton-root {
+  background: var(--mustard-soft);
+  color: #7A5B12;
+  border: 1px dashed rgb(201 154 46 / 0.6);
+}
+.schedule-finder__open.MuiButton-root:hover { background: #F8E6B3; }
+
+/* חלונית החיפוש – כרטיס יומן קטן בצהוב פתק */
+.schedule-finder {
+  position: relative;
+  margin-top: 4px;
+  padding: 22px 16px 16px !important;
+  background:
+    var(--texture-paper),
+    linear-gradient(180deg, #FDF3D3 0%, #FAEBC0 100%) !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  box-shadow: var(--shadow-note);
+  animation: sheet-in var(--dur) var(--ease-out) both;
+}
+/* פס "דבק" עליון */
+.schedule-finder::before {
+  content: "";
+  position: absolute;
+  inset-block-start: -9px;
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  width: 72px;
+  height: 18px;
+  background: rgb(243 191 177 / 0.75);
+  border: 1px solid rgb(140 106 67 / 0.12);
+  rotate: -2deg;
+}
+.schedule-finder__title.MuiTypography-root {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--ink);
+}
+.schedule-finder .MuiOutlinedInput-root { background: rgb(255 255 255 / 0.85); }
+
+/* זמן מוצע = "כרטיס" קטן שאפשר לבחור */
+.slot-chip.MuiChip-root {
+  height: 32px;
+  font-weight: 700;
+  color: var(--terracotta);
+  background: var(--paper);
+  border: 1.5px dashed rgb(194 96 63 / 0.55);
+  box-shadow: var(--shadow-xs);
+  transition: translate var(--dur-fast) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+.slot-chip.MuiChip-root:hover {
+  translate: 0 -2px;
+  color: #fff;
+  background: var(--terracotta) !important;
+  border-style: solid;
+}

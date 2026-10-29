@@ -575,3 +575,103 @@
   color: #44535F;
   line-height: 1.6;
 }
+
+/* ---------------- שיוך משימות וזמן פנוי ---------------- */
+
+.about-assign {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.about-feature {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px 20px;
+  transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.about-feature:hover { translate: 0 -3px; box-shadow: var(--shadow-note); }
+.about-feature h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.18rem;
+  color: var(--ink);
+}
+.about-feature p { margin: 0; line-height: 1.7; color: #44535F; }
+.about-feature p strong { color: var(--ink); }
+
+.about-feature__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 14px;
+  border-radius: 14px;
+  color: var(--terracotta);
+  background: var(--terracotta-soft);
+  rotate: -4deg;
+}
+.about-feature:nth-child(2) .about-feature__icon { color: #2E4352; background: #DFE5EA; rotate: 3deg; }
+.about-feature:nth-child(3) .about-feature__icon { color: #7A5B12; background: var(--mustard-soft); }
+
+.about-feature__demo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.about-private-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  font-size: 0.85rem;
+  color: #4A5965;
+  rotate: -0.6deg;
+  box-shadow:
+    inset 0 0 0 1.5px rgb(255 253 248 / 0.9),
+    inset 0 0 0 3px rgb(46 67 82 / 0.16),
+    var(--shadow-note);
+}
+
+.about-slot {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding-inline: 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  direction: ltr;
+  color: var(--terracotta);
+  background: var(--paper);
+  border: 1.5px dashed rgb(194 96 63 / 0.55);
+  box-shadow: var(--shadow-xs);
+}
+.about-slot:first-child {
+  color: #fff;
+  background: var(--terracotta);
+  border-style: solid;
+}
+
+.about-assign__notes {
+  margin: 22px 0 0;
+  padding: 16px 20px;
+  padding-inline-start: 40px;
+  display: grid;
+  gap: 8px;
+  line-height: 1.6;
+  color: #44535F;
+  background: rgb(251 239 201 / 0.55);
+  border: 1px dashed rgb(201 154 46 / 0.45);
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .about-assign { grid-template-columns: 1fr; }
+}
