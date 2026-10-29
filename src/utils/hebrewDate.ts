@@ -25,3 +25,13 @@ export function hebrewMonth(date: Date): string {
 export function isHebrewMonthStart(date: Date): boolean {
     return new HDate(date).getDate() === 1
 }
+
+/* יום וחודש עבריים בלי השנה, למשל: א׳ כסלו – לתוויות קצרות */
+export function formatHebrewDayMonth(date: Date | string): string {
+    return new HDate(toLocalDate(date)).renderGematriya(true, true)
+}
+
+/* טקסט עזר לשדה תאריך: התאריך העברי של מה שנבחר, או ריק כשהשדה ריק */
+export function hebrewHint(value: string): string {
+    return value && dayjs(value).isValid() ? formatHebrewDate(value) : ''
+}

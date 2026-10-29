@@ -11,6 +11,7 @@ import { timeFormat } from '../../utils/timeFormat';
 import { getErrorMessage } from "../../utils/errorMessages"
 import { FormActions } from '../../components/FormActions'
 import { SchedulingSuggestions } from '../scheduling/SchedulingSuggestions'
+import { hebrewHint } from '../../utils/hebrewDate';
 
 interface TaskFormProrps {
     boardId: string,
@@ -31,6 +32,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
     const scheduleType = watch('scheduleType')
     const audience = watch('audience')
     const assigneeIds = watch('assigneeIds')
+    const [dueDate, startAt, endAt] = watch(['dueDate', 'startAt', 'endAt'])
     function onSubmit(values: TaskFormValues) {
         const input = toTaskInput(values)
         if (task)
@@ -81,7 +83,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                 )}
             />
             {scheduleType === 'DATE' &&
-                <TextField type="date" label='תאריך' {...register('dueDate')} error={!!errors.dueDate} helperText={errors.dueDate?.message} slotProps={{ inputLabel: { shrink: true } }} />
+                <TextField type="date" label='תאריך' {...register('dueDate')} error={!!errors.dueDate} helperText={errors.dueDate?.message ?? hebrewHint(dueDate)} slotProps={{ inputLabel: { shrink: true } }} />
             }
             {
                 scheduleType === 'TIMED' &&
@@ -89,7 +91,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                     <TextField type="datetime-local" label="שעת התחלה" fullWidth
                         slotProps={{ inputLabel: { shrink: true } }}
                         error={!!errors.startAt}
-                        helperText={errors.startAt?.message}
+                        helperText={errors.startAt?.message ?? hebrewHint(startAt)}
                         {...register('startAt', {
                             onChange: (e) => {
                                 const start: string = e.target.value;
@@ -103,7 +105,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                     <TextField type="datetime-local" label="שעת סיום" fullWidth
                         slotProps={{ inputLabel: { shrink: true } }}
                         error={!!errors.endAt}
-                        helperText={errors.endAt?.message}
+                        helperText={errors.endAt?.message ?? hebrewHint(endAt)}
                         {...register('endAt')} />
                 </Box>
             }

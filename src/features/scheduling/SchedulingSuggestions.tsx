@@ -6,6 +6,7 @@ import type { TimeSlot } from '../../types'
 import { useSuggestions } from './schedulingHooks'
 import { formatTimeRange } from '../../utils/timeFormat'
 import { getErrorMessage } from '../../utils/errorMessages'
+import { hebrewHint } from '../../utils/hebrewDate'
 
 interface SchedulingSuggestionsProps {
     boardId: string,
@@ -69,7 +70,7 @@ export function SchedulingSuggestions({ boardId, assignedUserId, onSelect }: Sch
         {/* שתי עמודות: יום + משך בשורה הראשונה, טווח השעות בשנייה */}
         <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
             <TextField type="date" label="יום" size="small" fullWidth value={date} onChange={(e) => setDate(e.target.value)}
-                slotProps={{ inputLabel: { shrink: true } }} />
+                slotProps={{ inputLabel: { shrink: true } }} helperText={hebrewHint(date)} />
             <TextField select label="משך" size="small" fullWidth value={durationMinutes} onChange={(e) => setDurationMinutes(Number(e.target.value))}>
                 {durationOptions.map((minutes) => (
                     <MenuItem key={minutes} value={minutes}>

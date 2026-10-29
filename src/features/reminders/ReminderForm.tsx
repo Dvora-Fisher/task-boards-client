@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Box, Stack, TextField, Alert } from '@mui/material'
 import {FormActions} from '../../components/FormActions'
 import { getErrorMessage } from "../../utils/errorMessages"
+import { hebrewHint } from '../../utils/hebrewDate'
 import { reminderSchema, emptyReminderValues, toFormValues, toReminderInput, type ReminderFormValues } from './reminderSchemas'
 
 interface ReminderFormProps {
@@ -18,10 +19,11 @@ export function ReminderForm({ boardId, onClose, reminder }: ReminderFormProps) 
     const updateReminder = useUpdateReminder(boardId)
     const isPending = createReminder.isPending || updateReminder.isPending
     const isError = createReminder.isError || updateReminder.isError
-    const { register, handleSubmit, formState: { errors } } = useForm<ReminderFormValues>({
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<ReminderFormValues>({
         resolver: zodResolver(reminderSchema),
         defaultValues: reminder ? toFormValues(reminder) : emptyReminderValues
     });
+    const remindAt = watch('remindAt')
     function onSubmit(values: ReminderFormValues) {
         const input = toReminderInput(values)
         if (reminder)
@@ -40,7 +42,7 @@ export function ReminderForm({ boardId, onClose, reminder }: ReminderFormProps) 
                 {...register('remindAt')}
                 slotProps={{ inputLabel: { shrink: true } }}
                 error={!!errors.remindAt}
-                helperText={errors.remindAt?.message} />
+                helperText={errors.remindAt?.message ?? hebrewHint(remindAt)} />
             <FormActions onCancel={onClose} isPending={isPending} />
         </Stack>
     </Box>
