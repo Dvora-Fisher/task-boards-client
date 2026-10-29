@@ -134,3 +134,29 @@
 @media (max-width: 600px) {
   .paper-calendar [class*="text-2xl"] { font-size: 1.15rem; }
 }
+
+/* "+3 נוספות" – כשלא כל האירועים נכנסים למשבצת. צבעוני, כדי שישימו לב שיש עוד */
+.paper-calendar .more-link {
+  display: inline-flex;
+  align-items: center;
+  margin: 2px 4px 0;
+  padding: 1px 9px;
+  border-radius: var(--radius-pill);
+  background: var(--terracotta);
+  color: #fff;
+  font-size: 0.78em;
+  font-weight: 700;
+  line-height: 1.6;
+  box-shadow: var(--shadow-xs);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.paper-calendar .more-link > * { color: inherit; }
+.paper-calendar .more-link:hover {
+  background: var(--terracotta-hover);
+  transform: translateY(-1px);
+}
+.paper-calendar .more-link:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}

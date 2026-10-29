@@ -81,6 +81,8 @@ export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
                     eventClick={handleEventClick}
                     height="100%"
                     dayMaxEvents={true}
+                    moreLinkClass="more-link"
+                    moreLinkContent={(arg) => `+${arg.num} נוספות`}
                     dayCellTopContent={renderDayCell}
                     dayHeaderContent={renderDayHeader}
                 />
