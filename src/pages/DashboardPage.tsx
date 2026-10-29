@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { BoardCard, NewBoardCard } from "../features/boards/BoardCard";
 import { BoardDialog } from "../features/boards/BoardDialog";
+import { formatHebrewDate } from '../utils/hebrewDate'
 
 export function DashboardPage() {
     const [search, setSearch] = useState('')
@@ -24,7 +25,9 @@ export function DashboardPage() {
                 <span className="pin pin--green" aria-hidden="true" />
                 <Typography variant="h4" component='h1'>הלוחות שלי</Typography>
                 <span className="page-hero__sub">
-                    {boards.pagination.total === 0 ? 'עוד אין לוחות – זה הזמן לפתוח את הראשון' : `${boards.pagination.total} לוחות על הקיר`}
+                    <span className="page-hero__sub">
+                        {formatHebrewDate(new Date())} · {boards.pagination.total === 0 ? 'עוד אין לוחות – זה הזמן לפתוח את הראשון' : `${boards.pagination.total} לוחות על הקיר`}
+                    </span>
                 </span>
             </div>
             <div className="page-hero__actions">

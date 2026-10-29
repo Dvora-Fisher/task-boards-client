@@ -8,6 +8,7 @@ import { useDeleteTask } from "./tasksHooks"
 import { formatTimeRange } from '../../utils/timeFormat'
 import { ConfirmDialog } from "../../components/ConfirmDialog"
 import { avatarToneFor, initials } from '../../utils/noteStyle'
+import { formatHebrewDate } from '../../utils/hebrewDate'
 
 interface TaskItemProps {
     task: Task,
@@ -63,7 +64,7 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
                     size="small"
                     className="tag tag--plain"
                     icon={<EventOutlined />}
-                    label={dayjs(task.dueDate).format('DD/MM/YYYY')}
+                    label={`${dayjs(task.dueDate).format('DD/MM/YYYY')} · ${formatHebrewDate(task.dueDate)}`}
                 />
             )}
             {task.startAt && task.endAt && (
