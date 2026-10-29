@@ -10,6 +10,7 @@ import dayjs from 'dayjs'
 import { timeFormat } from '../../utils/timeFormat';
 import { getErrorMessage } from "../../utils/errorMessages"
 import { FormActions } from '../../components/FormActions'
+import { SchedulingSuggestions } from '../scheduling/SchedulingSuggestions'
 
 interface TaskFormProrps {
     boardId: string,
@@ -29,6 +30,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
     const { data: members = [], isPending: membersPending } = useMembers(boardId)
     const scheduleType = watch('scheduleType')
     const audience = watch('audience')
+    const assigneeIds = watch('assigneeIds')
     function onSubmit(values: TaskFormValues) {
         const input = toTaskInput(values)
         if (task)
@@ -98,7 +100,16 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                             }
                         }
                         )} />
-
+                    {scheduleType === 'TIMED' &&
+                        <SchedulingSuggestions
+                            boardId={boardId}
+                            assignedUserId={assigneeIds[0]}
+                            onSelect={(slot) => {
+                                setValue('startAt', dayjs(slot.startAt).format(timeFormat), { shouldValidate: true })
+                                setValue('endAt', dayjs(slot.endAt).format(timeFormat), { shouldValidate: true })
+                            }}
+                        />
+                    }
                     <TextField type="datetime-local" label="שעת סיום" fullWidth
                         slotProps={{ inputLabel: { shrink: true } }}
                         error={!!errors.endAt}
@@ -106,6 +117,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         {...register('endAt')} />
                 </Box>
             }
+
             {members.length > 1 && (
                 <>
                     <Controller
