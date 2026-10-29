@@ -100,16 +100,6 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                             }
                         }
                         )} />
-                    {scheduleType === 'TIMED' &&
-                        <SchedulingSuggestions
-                            boardId={boardId}
-                            assignedUserId={assigneeIds[0]}
-                            onSelect={(slot) => {
-                                setValue('startAt', dayjs(slot.startAt).format(timeFormat), { shouldValidate: true })
-                                setValue('endAt', dayjs(slot.endAt).format(timeFormat), { shouldValidate: true })
-                            }}
-                        />
-                    }
                     <TextField type="datetime-local" label="שעת סיום" fullWidth
                         slotProps={{ inputLabel: { shrink: true } }}
                         error={!!errors.endAt}
@@ -117,7 +107,16 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         {...register('endAt')} />
                 </Box>
             }
-
+            {scheduleType === 'TIMED' &&
+                <SchedulingSuggestions
+                    boardId={boardId}
+                    assignedUserId={assigneeIds[0]}
+                    onSelect={(slot) => {
+                        setValue('startAt', dayjs(slot.startAt).format(timeFormat), { shouldValidate: true })
+                        setValue('endAt', dayjs(slot.endAt).format(timeFormat), { shouldValidate: true })
+                    }}
+                />
+            }
             {members.length > 1 && (
                 <>
                     <Controller
