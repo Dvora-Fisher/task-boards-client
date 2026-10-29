@@ -14,24 +14,40 @@ interface SchedulingSuggestionsProps {
 }
 
 const durationOptions = [15, 30, 45, 60, 90, 120, 180]
+const DEFAULT_FROM = '08:00'
+const DEFAULT_TO = '20:00'
+
+/* אם שעות החיפוש של היום כבר עברו – מתחילים ממחר */
+function defaultDate() {
+    const now = dayjs()
+    const todayEnd = dayjs(`${now.format('YYYY-MM-DD')}T${DEFAULT_TO}`)
+    return (now.isBefore(todayEnd) ? now : now.add(1, 'day')).format('YYYY-MM-DD')
+}
 
 export function SchedulingSuggestions({ boardId, assignedUserId, onSelect }: SchedulingSuggestionsProps) {
     const [isOpen, setIsOpen] = useState(false)
-    const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'))
-    const [fromTime, setFromTime] = useState('08:00')
-    const [toTime, setToTime] = useState('20:00')
+    const [date, setDate] = useState(defaultDate)
+    const [fromTime, setFromTime] = useState(DEFAULT_FROM)
+    const [toTime, setToTime] = useState(DEFAULT_TO)
     const [durationMinutes, setDurationMinutes] = useState(60)
     const suggestions = useSuggestions(boardId)
 
-    const isRangeValid = !!date && fromTime < toTime
+    const now = dayjs()
+    const searchFrom = dayjs(`${date}T${fromTime}`)
+    const searchTo = dayjs(`${date}T${toTime}`)
+    // לא מציעים זמנים שכבר עברו: אם החיפוש מתחיל בעבר, מתחילים מהדקה הבאה
+    const effectiveFrom = searchFrom.isBefore(now) ? now.startOf('minute').add(1, 'minute') : searchFrom
+
+    const isOrderValid = !!date && !!fromTime && !!toTime && fromTime < toTime
+    const isInPast = isOrderValid && !effectiveFrom.isBefore(searchTo)
+    const canSearch = isOrderValid && !isInPast
 
     function handleSearch() {
-        const now = dayjs()
-        const from = dayjs(`${date}T${fromTime}`)
+        if (!canSearch) return
         suggestions.mutate({
             durationMinutes,
-            from: (from.isBefore(now) ? now.startOf('minute').add(1, 'minute') : from).toISOString(),
-            to: dayjs(`${date}T${toTime}`).toISOString(),
+            from: effectiveFrom.toISOString(),
+            to: searchTo.toISOString(),
             maxSuggestions: 6,
             assignedUserId,
         })
@@ -44,40 +60,44 @@ export function SchedulingSuggestions({ boardId, assignedUserId, onSelect }: Sch
 
     return <Box
         sx={{ p: 2, border: 1, borderColor: 'divider', borderRadius: 2 }}
-        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); if (isRangeValid) handleSearch() } }}
+   
+        onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleSearch() } }}
     >
         <Typography variant="subtitle2" sx={{ mb: 1.5 }}>חיפוש זמן פנוי</Typography>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr', sm: '1.3fr 1fr 1fr 1fr' }, gap: 1.5 }}>
-            <TextField type="date" label="יום" size="small" value={date} onChange={(e) => setDate(e.target.value)}
+
+        {/* שתי עמודות: יום + משך בשורה הראשונה, טווח השעות בשנייה */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5 }}>
+            <TextField type="date" label="יום" size="small" fullWidth value={date} onChange={(e) => setDate(e.target.value)}
                 slotProps={{ inputLabel: { shrink: true } }} />
-            <TextField type="time" label="מהשעה" size="small" value={fromTime} onChange={(e) => setFromTime(e.target.value)}
-                slotProps={{ inputLabel: { shrink: true } }} error={!isRangeValid} />
-            <TextField type="time" label="עד השעה" size="small" value={toTime} onChange={(e) => setToTime(e.target.value)}
-                slotProps={{ inputLabel: { shrink: true } }} error={!isRangeValid} />
-            <TextField select label="משך" size="small" value={durationMinutes} onChange={(e) => setDurationMinutes(Number(e.target.value))}>
+            <TextField select label="משך" size="small" fullWidth value={durationMinutes} onChange={(e) => setDurationMinutes(Number(e.target.value))}>
                 {durationOptions.map((minutes) => (
                     <MenuItem key={minutes} value={minutes}>
-                        {minutes < 60 ? `${minutes} דק'` : `${minutes / 60} שע'`}
+                        {minutes < 60 ? `${minutes} דקות` : minutes === 60 ? 'שעה' : `${minutes / 60} שעות`}
                     </MenuItem>
                 ))}
             </TextField>
+            <TextField type="time" label="מהשעה" size="small" fullWidth value={fromTime} onChange={(e) => setFromTime(e.target.value)}
+                slotProps={{ inputLabel: { shrink: true } }} error={!isOrderValid} />
+            <TextField type="time" label="עד השעה" size="small" fullWidth value={toTime} onChange={(e) => setToTime(e.target.value)}
+                slotProps={{ inputLabel: { shrink: true } }} error={!isOrderValid} />
         </Box>
-        {!isRangeValid && <Typography variant="caption" color="error">שעת הסיום של החיפוש צריכה להיות אחרי שעת ההתחלה</Typography>}
+        {!isOrderValid && <Typography variant="caption" color="error">שעת הסיום של החיפוש צריכה להיות אחרי שעת ההתחלה</Typography>}
+        {isInPast && <Typography variant="caption" color="error">השעות האלה כבר עברו. בחרי יום או שעות אחרים</Typography>}
 
         <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
             <Button variant="outlined" size="small" startIcon={<SearchOutlined />} onClick={handleSearch}
-                disabled={!isRangeValid || suggestions.isPending}>
+                disabled={!canSearch || suggestions.isPending}>
                 {suggestions.isPending ? 'מחפשת...' : 'חיפוש'}
             </Button>
             <Button size="small" onClick={() => { setIsOpen(false); suggestions.reset() }}>סגירה</Button>
         </Stack>
 
         {suggestions.isError && (
-            <Alert severity="error" sx={{ mt: 1.5 }}>{getErrorMessage(suggestions.error, 'לא הצלחנו לחפש זמנים פנויים, נסה שוב')}</Alert>
+            <Alert severity="error" sx={{ mt: 1.5 }}>{getErrorMessage(suggestions.error, 'לא הצלחנו לחפש זמנים פנויים, נסי שוב')}</Alert>
         )}
         {suggestions.isSuccess && (
             suggestions.data.suggestions.length === 0
-                ? <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>לא נמצא זמן פנוי — נסה יום או טווח שעות אחר</Typography>
+                ? <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>לא נמצא זמן פנוי — נסי יום או טווח שעות אחר</Typography>
                 : <Stack direction="row" spacing={1} useFlexGap sx={{ mt: 1.5, flexWrap: 'wrap' }}>
                     {suggestions.data.suggestions.map((slot) => (
                         <Chip
