@@ -5,7 +5,7 @@ import { Container } from "@mui/material";
 export function Layout() {
     return <>
         <Navbar />
-        <Container maxWidth='md' sx={{ py: 3 }}>
+        <Container maxWidth='lg' component='main' className='app-main'>
             <Outlet />
         </Container>
     </>

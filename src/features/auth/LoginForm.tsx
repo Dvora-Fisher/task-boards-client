@@ -4,7 +4,8 @@ import { type LoginFormValues, loginSchema } from './authSchemas'
 import { Box, Stack, TextField, Button, Alert } from '@mui/material'
 import { useLogin } from './authHooks'
 import { useNavigate } from 'react-router-dom'
-import { ApiError } from '../../api/client'
+import { PasswordField } from '../../components/PasswordField'
+import { getErrorMessage } from '../../utils/errorMessages'
 
 
 export function LoginForm() {
@@ -20,17 +21,10 @@ export function LoginForm() {
     return <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
         <Stack spacing={2}>
             <TextField {...register('email')} label='אימייל' type='email' autoComplete='email' error={!!formState.errors.email} helperText={formState.errors.email?.message} fullWidth></TextField>
-            <TextField {...register('password')} label='סיסמה' type='password' autoComplete='current-password' error={!!formState.errors.password} helperText={formState.errors.password?.message} fullWidth></TextField>
-            {error && <Alert severity='error'>{errorMessage(error)}</Alert>}
-            <Button type='submit' variant='contained' disabled={isPending}>התחברות</Button>
+           <PasswordField {...register('password')} label='סיסמה' autoComplete='current-password' error={!!formState.errors.password} helperText={formState.errors.password?.message} fullWidth />
+            {error && <Alert severity='error'>{getErrorMessage(error, 'משהו השתבש, נסה שוב')}</Alert>}
+            <Button type='submit' variant='contained' size='large' disabled={isPending}>{isPending ? 'מתחברים...' : 'התחברות'}</Button>
         </Stack>
     </Box>
 
-}
-
-
-function errorMessage(error: Error) {
-    if (error instanceof ApiError && error.code === 'INVALID_CREDENTIALS')
-        return 'אימייל או סיסמה שגויים'
-    return 'משהו השתבש, נסה שוב'
 }

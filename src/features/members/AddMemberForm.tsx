@@ -22,7 +22,7 @@ export function AddMemberForm({boardId}: addMemberProps) {
     });
     const onSubmit = (values: { email: string }) => addMember.mutate(values.email, { onSuccess: () => reset() })
 
-    return <Stack spacing={1} sx={{ mb: 2 }}>
+    return <Stack spacing={1} sx={{ mb: 2 }} className="add-member">
         { addMember.isError && <Alert severity='error'> {getErrorMessage(addMember.error, 'לא הצלחנו להוסיף, נסה שוב')}</Alert>}
         <Stack component="form" onSubmit={handleSubmit(onSubmit)} direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
             <TextField {...register('email')} label="אימייל של חבר להוספה" error={!!errors.email} helperText={errors.email?.message} size="small" fullWidth />

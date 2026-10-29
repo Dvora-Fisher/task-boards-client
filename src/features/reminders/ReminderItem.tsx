@@ -1,8 +1,10 @@
-import { Paper, Stack, Typography, Chip, IconButton } from '@mui/material';
+import { Stack, Typography, Chip, IconButton, Tooltip } from '@mui/material';
 import { EditOutlined, DeleteOutlined, NotificationsOutlined } from '@mui/icons-material';
+import { useState } from 'react';
 import type { Reminder } from '../../types';
 import { useDeleteReminder } from './reminderHooks';
 import { formatDateTime } from '../../utils/timeFormat';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
 
 interface ReminderItemProps {
     reminder: Reminder,
@@ -13,36 +15,39 @@ interface ReminderItemProps {
 
 export function ReminderItem({ reminder, canEdit, onEdit, onDelete }: ReminderItemProps) {
     const deleteReminder = useDeleteReminder(reminder.boardId)
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
     function handleDelete() {
-        if (window.confirm(`למחוק את התזכורת: ${reminder.title}`))
-            deleteReminder.mutate(reminder.id, { onSuccess: onDelete })
+        deleteReminder.mutate(reminder.id, { onSuccess: () => { setIsConfirmOpen(false); onDelete?.() } })
     }
 
-    return <Paper variant="outlined" sx={{ p: 2 }}>
+    return <article className="reminder-note note note--cream">
+        <span className="reminder-note__tape" aria-hidden="true" />
         <Stack direction="row" spacing={1} sx={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
-            <Typography variant="subtitle1">{reminder.title}</Typography>
+            <Typography variant="subtitle1" component="h3" className="reminder-note__title">
+                <NotificationsOutlined className="reminder-note__bell" fontSize="small" />
+                {reminder.title}
+            </Typography>
             {canEdit && (
-                <Stack direction="row" spacing={0.5}>
-                    <IconButton size="small" aria-label="עריכה" onClick={onEdit}>
+                <Stack direction="row" spacing={0.5} className="note-actions">
+                    <Tooltip title="עריכה"><IconButton size="small" aria-label="עריכת התזכורת" onClick={onEdit}>
                         <EditOutlined fontSize="small" />
-                    </IconButton>
-                    <IconButton size="small" color="error" aria-label="מחיקה" onClick={handleDelete} disabled={deleteReminder.isPending}>
+                    </IconButton></Tooltip>
+                    <Tooltip title="מחיקה"><IconButton size="small" className="note-actions__delete" aria-label="מחיקת התזכורת" onClick={() => setIsConfirmOpen(true)} disabled={deleteReminder.isPending}>
                         <DeleteOutlined fontSize="small" />
-                    </IconButton>
+                    </IconButton></Tooltip>
                 </Stack>
             )}
         </Stack>
 
         {reminder.description && (
-            <Typography variant="body2" color="text.secondary">{reminder.description}</Typography>
+            <Typography variant="body2" className="reminder-note__desc">{reminder.description}</Typography>
         )}
 
-        <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+        <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
             <Chip
                 size="small"
-                variant="outlined"
-                color="secondary"
+                className="tag tag--reminder"
                 icon={<NotificationsOutlined />}
                 label={formatDateTime(reminder.remindAt)}
             />
@@ -51,5 +56,14 @@ export function ReminderItem({ reminder, canEdit, onEdit, onDelete }: ReminderIt
         {deleteReminder.isError && (
             <Typography variant="caption" color="error" sx={{ display: 'block', mt: 1 }}>המחיקה נכשלה</Typography>
         )}
-    </Paper>
+        <ConfirmDialog
+            open={isConfirmOpen}
+            title="למחוק את התזכורת?"
+            isPending={deleteReminder.isPending}
+            onConfirm={handleDelete}
+            onCancel={() => setIsConfirmOpen(false)}
+        >
+            התזכורת <strong>{reminder.title}</strong> תימחק מהלוח.
+        </ConfirmDialog>
+    </article>
 }

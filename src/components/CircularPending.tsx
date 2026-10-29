@@ -1,7 +1,8 @@
 import { Box, CircularProgress } from "@mui/material"
 
 export function CircularPending(){
-    return <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+    return <Box className="pending" role="status" aria-live="polite">
             <CircularProgress />
+            <span>רגע, טוענים...</span>
         </Box>
 }

@@ -1,5 +1,6 @@
 import { useTasks } from './tasksHooks'
-import { Typography, Alert, CircularProgress, Stack } from '@mui/material'
+import { Typography, Alert } from '@mui/material'
+import { CircularPending } from '../../components/CircularPending'
 import { TaskItem } from './TaskItem'
 import { useState } from 'react'
 import type { Task } from '../../types'
@@ -14,15 +15,18 @@ export function TaskList({ boardId, canEdit }: TaskListProps) {
     const { data, isPending, isError } = useTasks(boardId)
     const [editingTask, setEditingTask] = useState<Task | null>()
     if (isPending)
-        return <CircularProgress size={24} />
+        return <CircularPending />
     if (isError)
         return <Alert severity='error'>לא הצלחנו לטעון את המשימות</Alert>
     if (data.items.length === 0)
-        return <Typography>אין עדיין משימות בלוח</Typography>
+        return <div className="empty-note">
+            <p className="empty-note__title">אין עדיין משימות</p>
+            <p className="empty-note__text">{canEdit ? 'אפשר להוסיף משימה ראשונה בכפתור "משימה חדשה".' : 'כשיתווספו משימות ללוח, הן יופיעו כאן.'}</p>
+        </div>
     return <>
-        <Stack spacing={1.5}>
+        <div className="note-grid stagger">
             {data.items.map(task => <TaskItem key={task.id} task={task} canEdit={canEdit} onEdit={() => setEditingTask(task)} />)}
-        </Stack>
+        </div>
         {data.pagination.total > data.items.length && (
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 מוצגות {data.items.length} מתוך {data.pagination.total} משימות

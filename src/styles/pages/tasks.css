@@ -1,0 +1,159 @@
+/* ==========================================================================
+   משימות ותזכורות – פתקיות על דף העבודה
+   ========================================================================== */
+
+.note-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px 20px;
+  align-items: start;
+}
+
+.note-grid--past { opacity: 0.62; }
+.note-grid--past:hover { opacity: 0.85; transition: opacity var(--dur) var(--ease-out); }
+
+.section-label.MuiTypography-root {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-soft);
+}
+.section-label.MuiTypography-root::before {
+  content: "";
+  width: 18px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--terracotta);
+}
+
+/* ---------------- פתק משימה ---------------- */
+
+.task-note {
+  padding: 16px 16px 14px;
+  border-radius: 4px;
+  transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), rotate var(--dur) var(--ease-out);
+}
+/* פס "דבק" עליון של פתק דביק */
+.task-note::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  height: 10px;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 0.045), transparent);
+  pointer-events: none;
+}
+
+.note-grid .task-note:nth-child(3n + 1) { --tilt: -0.6deg; }
+.note-grid .task-note:nth-child(3n + 2) { --tilt: 0.5deg; }
+.note-grid .task-note:nth-child(3n) { --tilt: -0.2deg; }
+
+.note-grid .task-note:hover,
+.note-grid .reminder-note:hover {
+  translate: 0 -3px;
+  rotate: 0deg;
+  box-shadow: var(--shadow-note-lift);
+}
+
+.task-note__title.MuiTypography-root {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.task-note__desc.MuiTypography-root,
+.reminder-note__desc.MuiTypography-root {
+  margin-top: 6px;
+  color: #44535F;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* משימה שהושלמה */
+.task-note[data-status="DONE"] .task-note__title {
+  color: #3E5A46;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: rgb(62 90 70 / 0.55);
+}
+.task-note__check.MuiSvgIcon-root {
+  margin-top: 2px;
+  color: var(--sage);
+  animation: check-pop 360ms var(--ease-spring) both;
+}
+
+/* כפתורי עריכה ומחיקה – חצי שקופים עד מעבר עכבר */
+.note-actions { flex: none; margin-top: -4px; margin-inline-end: -6px; }
+.note-actions .MuiIconButton-root { color: rgb(36 55 70 / 0.62); }
+.note-actions .MuiIconButton-root:hover { color: var(--ink); background: rgb(255 255 255 / 0.55); }
+.note-actions__delete.MuiIconButton-root:hover { color: var(--danger); background: rgb(248 222 216 / 0.8); }
+
+@media (hover: hover) {
+  .note-grid .note-actions { opacity: 0.55; transition: opacity var(--dur) var(--ease-out); }
+  .note-grid .note:hover .note-actions,
+  .note-grid .note:focus-within .note-actions { opacity: 1; }
+}
+
+/* ---------------- תגיות סטטוס ועדיפות ---------------- */
+
+.status-tag.MuiChip-root { color: #fff; }
+.status-tag--TODO.MuiChip-root { background: #876812; }
+.status-tag--IN_PROGRESS.MuiChip-root { background: var(--sky); }
+.status-tag--DONE.MuiChip-root { background: var(--sage); }
+
+.priority-tag.MuiChip-root { padding-inline-start: 4px; }
+.priority-tag.MuiChip-root::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-inline-start: 6px;
+  background: currentColor;
+}
+.priority-tag--HIGH.MuiChip-root { color: #A3482B; }
+.priority-tag--MEDIUM.MuiChip-root { color: #8A6A16; }
+.priority-tag--LOW.MuiChip-root { color: #4E7458; }
+
+.tag--time.MuiChip-root { color: #A3482B; }
+.tag--reminder.MuiChip-root { color: #2F6680; background: var(--sky-soft); }
+
+/* ---------------- פתק תזכורת: נייר קרם עם סלוטייפ ---------------- */
+
+.reminder-note {
+  padding: 20px 16px 14px;
+  border-radius: 3px;
+  border-inline-start: 4px solid var(--sky);
+  transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out), rotate var(--dur) var(--ease-out);
+}
+.note-grid .reminder-note:nth-child(odd) { --tilt: 0.4deg; }
+.note-grid .reminder-note:nth-child(even) { --tilt: -0.5deg; }
+
+.reminder-note__tape {
+  position: absolute;
+  inset-block-start: -10px;
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  width: 76px;
+  height: 20px;
+  background: rgb(187 220 235 / 0.75);
+  border: 1px solid rgb(62 124 153 / 0.15);
+  box-shadow: var(--shadow-xs);
+  rotate: -2deg;
+}
+
+.reminder-note__title.MuiTypography-root {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.reminder-note__bell.MuiSvgIcon-root { margin-top: 3px; color: var(--sky); }
+
+/* בתוך חלון פרטים – הפתק ישר ובלי הופעה מדורגת */
+.MuiDialog-paper .note { rotate: 0deg; }

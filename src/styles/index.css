@@ -1,0 +1,14 @@
+/* ==========================================================================
+   Modern Corkboard Studio – נקודת הכניסה לכל קובצי העיצוב.
+   סדר הטעינה חשוב: משתנים → בסיס → רכיבים → אנימציות → עמודים.
+   ========================================================================== */
+@import "./tokens.css";
+@import "./global.css";
+@import "./components.css";
+@import "./animations.css";
+@import "./pages/auth.css";
+@import "./pages/boards.css";
+@import "./pages/board-details.css";
+@import "./pages/tasks.css";
+@import "./pages/calendar.css";
+@import "./pages/about.css";

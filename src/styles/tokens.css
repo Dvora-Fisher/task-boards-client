@@ -1,0 +1,112 @@
+/* ==========================================================================
+   Modern Corkboard Studio — Design tokens
+   כל הצבעים, הצללים, הרדיוסים והטיפוגרפיה של האתר במקום אחד.
+   ========================================================================== */
+
+:root {
+  /* ---------- פלטה ראשית ---------- */
+  --cork: #C99C6B;
+  --cork-deep: #A97A4C;
+  --cork-light: #DDBB92;
+
+  --cream: #F8F3E9;
+  --cream-deep: #F1E8D8;
+  --paper: #FFFDF8;
+  --paper-warm: #FBF6EC;
+
+  --ink: #243746;            /* טקסט ראשי – כחול פחם */
+  --ink-soft: #4C5D6B;       /* טקסט משני */
+  --ink-faint: #7F8C96;      /* טקסט שולי / placeholders */
+
+  /* ---------- צבעי פתקים ---------- */
+  --note-yellow: #F5D77F;
+  --note-pink: #F3BFB1;
+  --note-blue: #BBDCEB;
+  --note-mint: #C6E3C9;
+  --note-cream: #F6EEDC;
+
+  /* גרסאות בהירות (רקע פתק) – גרדיאנט מלמעלה למטה */
+  --note-yellow-top: #FAE6A6;
+  --note-pink-top: #F8D3C8;
+  --note-blue-top: #D3E8F2;
+  --note-mint-top: #D9EDDA;
+
+  /* גרסאות כהות (פינה מקופלת, פסים) */
+  --note-yellow-deep: #E3BE57;
+  --note-pink-deep: #DFA08F;
+  --note-blue-deep: #93C1D7;
+  --note-mint-deep: #9DCBA2;
+
+  /* ---------- עץ ---------- */
+  --wood-light: #EAD7B7;
+  --wood: #D8BB8D;
+  --wood-mid: #C29C68;
+  --wood-dark: #8C6A43;
+
+  /* ---------- הדגשות ---------- */
+  --terracotta: #C2603F;
+  --terracotta-hover: #AD5133;
+  --terracotta-soft: #F7DDD2;
+  --sage: #6F9A78;
+  --sage-soft: #DCEBDD;
+  --mustard: #C99A2E;
+  --mustard-soft: #FBEFC9;
+  --sky: #3E7C99;
+  --sky-soft: #DDEDF4;
+  --danger: #B5412F;
+  --danger-soft: #F8DED8;
+
+  /* ---------- סיכות ---------- */
+  --pin-red: #C9603F;
+  --pin-green: #6F9A78;
+  --pin-mustard: #D2A43A;
+  --pin-blue: #4F86A6;
+
+  /* ---------- טיפוגרפיה ---------- */
+  --font-body: "Heebo", "Rubik", system-ui, sans-serif;
+  --font-display: "Rubik", "Heebo", system-ui, sans-serif;
+  --font-hand: "Amatic SC", "Rubik", cursive;
+
+  /* ---------- רדיוסים ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  /* ---------- צללים (חמים, לא אפורים) ---------- */
+  --shadow-color: 62 42 20;
+  --shadow-xs: 0 1px 2px rgb(var(--shadow-color) / 0.10);
+  --shadow-sm: 0 1px 2px rgb(var(--shadow-color) / 0.08), 0 3px 8px rgb(var(--shadow-color) / 0.08);
+  --shadow-note:
+    0 1px 1px rgb(var(--shadow-color) / 0.06),
+    0 4px 6px -2px rgb(var(--shadow-color) / 0.10),
+    0 14px 22px -10px rgb(var(--shadow-color) / 0.28);
+  --shadow-note-lift:
+    0 2px 3px rgb(var(--shadow-color) / 0.06),
+    0 12px 18px -6px rgb(var(--shadow-color) / 0.16),
+    0 28px 40px -16px rgb(var(--shadow-color) / 0.38);
+  --shadow-paper:
+    0 2px 4px rgb(var(--shadow-color) / 0.06),
+    0 24px 60px -18px rgb(var(--shadow-color) / 0.35);
+  --shadow-inset-cork: inset 0 2px 10px rgb(70 40 10 / 0.28);
+
+  /* ---------- תנועה ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur: 240ms;
+  --dur-slow: 420ms;
+
+  /* ---------- טקסטורות ---------- */
+  /* נייר: רעש עדין מאוד ב-SVG – בלי קבצים חיצוניים */
+  --texture-paper: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .12 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* רשת נקודות עדינה של מחברת */
+  --texture-dots: radial-gradient(rgb(36 55 70 / 0.075) 1px, transparent 1.2px);
+  /* עורק עץ עדין */
+  --texture-wood: repeating-linear-gradient(90deg,
+      rgb(255 255 255 / 0) 0 7px,
+      rgb(140 106 67 / 0.07) 7px 8px,
+      rgb(255 255 255 / 0) 8px 19px,
+      rgb(140 106 67 / 0.05) 19px 21px);
+}

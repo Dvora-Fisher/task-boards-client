@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import type { CreateTaskInput, Task } from "../../types"
 import dayjs from 'dayjs';
-import {timeFormat} from '../../utils/timeFormat'
+import { timeFormat } from '../../utils/timeFormat'
 export const taskSchema = z.object({
     title: z.string().trim().min(1, 'נא להזין כותרת').max(200, 'עד 200 תווים'),
     description: z.string(),
@@ -10,7 +10,8 @@ export const taskSchema = z.object({
     scheduleType: z.enum(['NONE', 'DATE', 'TIMED']),
     dueDate: z.string(),
     startAt: z.string(),
-    endAt: z.string()
+    endAt: z.string(),
+    assigneeIds: z.array(z.string()),
 }).refine(
     (data) => data.scheduleType !== "DATE" || !!data.dueDate,
     {
@@ -48,7 +49,8 @@ export const emptyTaskValues: TaskFormValues = {
     scheduleType: 'NONE',
     dueDate: '',
     startAt: '',
-    endAt: ''
+    endAt: '',
+    assigneeIds: [],
 }
 
 export function toTaskInput(values: TaskFormValues): CreateTaskInput {
@@ -57,6 +59,7 @@ export function toTaskInput(values: TaskFormValues): CreateTaskInput {
         description: values.description !== '' ? values.description : null,
         status: values.status,
         priority: values.priority,
+        assigneeIds: values.assigneeIds,
         ...(
             values.scheduleType === "NONE"
                 ? {
@@ -89,5 +92,6 @@ export function toFormValues(task: Task): TaskFormValues {
         dueDate: task.dueDate ?? '',
         startAt: task.startAt ? dayjs(task.startAt).format(timeFormat) : '',
         endAt: task.endAt ? dayjs(task.endAt).format(timeFormat) : '',
+        assigneeIds: task.assignees.map((a) => a.id),
     }
 }

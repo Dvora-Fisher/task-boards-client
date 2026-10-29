@@ -2,9 +2,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import { DashboardPage } from '../pages/DashboardPage';
 import { AuthPage } from '../pages/AuthPage';
 import { BoardPage } from '../pages/BoardPage';
-import { BoardSettingsPage } from '../pages/BoardSettingsPage';
-import { JoinBoardPage } from '../pages/JoinBoardPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
+import { AboutPage } from '../pages/AboutPage';
 import { Layout } from '../components/Layout';
 import { ProtectedRoute } from '../components/ProtectedRoute';
 export const router = createBrowserRouter([
@@ -24,13 +23,9 @@ export const router = createBrowserRouter([
                         element: <BoardPage />
                     },
                     {
-                        path: '/boards/:boardId/settings',
-                        element: <BoardSettingsPage />
-                    },
-                    {
-                        path: '/join/:shareToken',
-                        element: <JoinBoardPage />
-                    },
+                        path: '/about',
+                        element: <AboutPage />
+                    }
                 ]
             },
         ]

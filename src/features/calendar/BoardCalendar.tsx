@@ -32,7 +32,7 @@ export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
     const colors = {
         task: theme.palette.primary.main,
         reminder: theme.palette.secondary.main,
-        done: theme.palette.grey[400],
+        done: '#9DB3A1',
     }
     const { isFetching, isError, data } = useCalendar(boardId, range)
     function handleEventClick(info: EventClickInfo) {
@@ -46,6 +46,8 @@ export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
     return <>
         {isFetching && <LinearProgress sx={{ mb: 1 }} />}
         {isError && <Alert severity="error" sx={{ mb: 2 }}>לא הצלחנו לטעון את לוח המשימות</Alert>}
+        <div className="paper-calendar">
+        <div className="paper-calendar__frame">
         <FullCalendar
             plugins={[themePlugin, dayGridPlugin, timeGridPlugin]}
             initialView='dayGridMonth'
@@ -54,7 +56,16 @@ export function BoardCalendar({ boardId, canEdit }: BoardCalendarProps) {
             datesSet={(info) => setRange({ from: info.start.toISOString(), to: info.end.toISOString() })}
             events={data ? toCalendarEvents(data.events, colors) : []}
             eventClick={handleEventClick}
+            height="100%"
+            dayMaxEvents={true}
         />
+        </div>
+        <div className="calendar-legend" aria-hidden="true">
+            <span><i style={{ background: colors.task }} />משימה</span>
+            <span><i style={{ background: colors.reminder }} />תזכורת</span>
+            <span><i style={{ background: colors.done }} />משימה שבוצעה</span>
+        </div>
+        </div>
         {selected?.type === 'TASK' &&
             <TaskDetailsDialog boardId={boardId} taskId={selected.id} canEdit={canEdit} onClose={handleClose} />}
         {selected?.type === 'REMINDER' &&

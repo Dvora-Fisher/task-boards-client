@@ -1,10 +1,11 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import {type RegisterFormValues, registerSchema } from './authSchemas'
+import { type RegisterFormValues, registerSchema } from './authSchemas'
 import { Box, Stack, TextField, Button, Alert } from '@mui/material'
 import { useRegister } from './authHooks'
 import { useNavigate } from 'react-router-dom'
-import { ApiError } from '../../api/client'
+import { PasswordField } from '../../components/PasswordField'
+import { getErrorMessage } from '../../utils/errorMessages'
 
 
 export function RegisterForm() {
@@ -21,17 +22,10 @@ export function RegisterForm() {
         <Stack spacing={2}>
             <TextField {...register('name')} label='שם מלא' autoComplete='name' error={!!formState.errors.name} helperText={formState.errors.name?.message} fullWidth></TextField>
             <TextField {...register('email')} label='אימייל' type='email' autoComplete='email' error={!!formState.errors.email} helperText={formState.errors.email?.message} fullWidth></TextField>
-            <TextField {...register('password')} label='סיסמה' type='password' autoComplete='new-password' error={!!formState.errors.password} helperText={formState.errors.password?.message} fullWidth></TextField>
-            {error && <Alert severity='error'>{errorMessage(error)}</Alert>}
-            <Button type='submit' variant='contained' disabled={isPending}>הרשמה</Button>
+            <PasswordField {...register('password')} label='סיסמה' autoComplete='new-password' error={!!formState.errors.password} helperText={formState.errors.password?.message} fullWidth />
+            {error && <Alert severity='error'>{getErrorMessage(error, 'משהו השתבש, נסה שוב')}</Alert>}
+            <Button type='submit' variant='contained' size='large' disabled={isPending}>{isPending ? 'יוצרים חשבון...' : 'יצירת חשבון'}</Button>
         </Stack>
     </Box>
 
-}
-
-
-function errorMessage(error: Error) {
-    if (error instanceof ApiError && error.code === 'EMAIL_TAKEN')
-        return 'האימייל כבר רשום'
-    return 'משהו השתבש, נסה שוב'
 }

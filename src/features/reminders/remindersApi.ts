@@ -1,8 +1,10 @@
-import {api} from '../../api/client'
+import {api, MAX_PAGE_SIZE} from '../../api/client'
 import type { Reminder, Paginated, CreateReminderInput, UpdateReminderInput } from '../../types'
 
 export function getReminders(boardId: string){
-    return api<Paginated<Reminder>>(`/boards/${boardId}/reminders`)
+    return api<Paginated<Reminder>>(`/boards/${boardId}/reminders`,{
+         query: { pageSize: MAX_PAGE_SIZE },
+    })
 }
 
 export function getReminder(reminderId: string){

@@ -1,0 +1,115 @@
+/* ==========================================================================
+   לוח השנה (FullCalendar, ערכת monarch) – יומן נייר מודרני
+   העיצוב נעשה דרך משתני ה-CSS של הערכה, כך שהספרייה וההתנהגות לא משתנות.
+   ========================================================================== */
+
+.paper-calendar {
+  /* ראשי / כפתורים */
+  --fc-monarch-primary: var(--terracotta);
+  --fc-monarch-primary-foreground: #fff;
+  --fc-monarch-primary-over: #B9583A;
+  --fc-monarch-primary-down: #A44E31;
+
+  /* כפתורים משניים (הקודם / הבא / היום) */
+  --fc-monarch-secondary: #F1E8D8;
+  --fc-monarch-secondary-foreground: var(--ink);
+  --fc-monarch-secondary-over: #EADDC6;
+  --fc-monarch-secondary-down: #E2D2B6;
+
+  /* היום הנוכחי */
+  --fc-monarch-tertiary: var(--terracotta);
+  --fc-monarch-tertiary-foreground: #fff;
+  --fc-monarch-tertiary-over: #B9583A;
+  --fc-monarch-tertiary-down: #A44E31;
+
+  /* תצוגה נבחרת (חודש / שבוע) */
+  --fc-monarch-selected: var(--ink);
+  --fc-monarch-selected-foreground: #fff;
+  --fc-monarch-selected-over: #34495A;
+  --fc-monarch-selected-down: #3E5568;
+
+  --fc-monarch-event: var(--terracotta);
+  --fc-monarch-event-contrast: #fff;
+  --fc-monarch-highlight: rgb(245 215 127 / 0.28);
+  --fc-monarch-now: var(--terracotta);
+  --fc-monarch-outline: var(--terracotta);
+
+  /* רקעים, טקסט וקווים בגווני נייר */
+  --fc-monarch-background: var(--paper);
+  --fc-monarch-popover: var(--paper);
+  --fc-monarch-faint: rgb(241 232 216 / 0.45);
+  --fc-monarch-muted: rgb(140 106 67 / 0.10);
+  --fc-monarch-strong: rgb(140 106 67 / 0.20);
+  --fc-monarch-stronger: rgb(140 106 67 / 0.26);
+  --fc-monarch-strongest: rgb(140 106 67 / 0.32);
+  --fc-monarch-foreground: var(--ink);
+  --fc-monarch-faint-foreground: #B3A894;
+  --fc-monarch-muted-foreground: var(--ink-soft);
+  --fc-monarch-border: rgb(140 106 67 / 0.16);
+  --fc-monarch-strong-border: rgb(140 106 67 / 0.30);
+
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+/* גובה קבוע שמתאים למסך – כל החודש נראה בלי לגלול את הדף */
+.paper-calendar__frame {
+  height: clamp(520px, calc(100vh - 250px), 780px);
+  height: clamp(520px, calc(100dvh - 250px), 780px);
+}
+
+@media (max-width: 600px) {
+  .paper-calendar__frame { height: clamp(460px, calc(100dvh - 200px), 640px); }
+}
+
+/* כותרת החודש */
+.paper-calendar [class*="text-2xl"] {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* היום הנוכחי – רקע תא עדין בצהוב פתק */
+.paper-calendar [role="gridcell"]:has([aria-current="date"]),
+.paper-calendar td:has([aria-current="date"]) {
+  background: rgb(245 215 127 / 0.18);
+}
+
+/* אירועים – פינות מעוגלות וצל קטן כמו מדבקות */
+.paper-calendar a[class*="rounded"],
+.paper-calendar [class*="rounded-sm"][style*="--fc-event-color"] {
+  border-radius: 6px;
+}
+.paper-calendar [style*="--fc-event-color"] {
+  box-shadow: 0 1px 2px rgb(var(--shadow-color) / 0.14);
+  transition: translate var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+}
+.paper-calendar [style*="--fc-event-color"]:hover {
+  translate: 0 -1px;
+  box-shadow: 0 3px 8px rgb(var(--shadow-color) / 0.2);
+}
+
+/* מקרא צבעים קטן מתחת ללוח */
+.calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+.calendar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.calendar-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+@media (max-width: 600px) {
+  .paper-calendar [class*="text-2xl"] { font-size: 1.15rem; }
+}

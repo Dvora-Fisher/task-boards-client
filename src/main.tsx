@@ -11,6 +11,7 @@ import { ThemeProvider } from '@mui/material'
 import { rtlCache } from './app/rtlCache'
 import { theme } from './app/theme'
 import CssBaseline from '@mui/material/CssBaseline'
+import './styles/index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

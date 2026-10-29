@@ -1,0 +1,274 @@
+/* ==========================================================================
+   עמוד הלוחות: פס שעם עליון + רשת פתקים
+   ========================================================================== */
+
+/* ---------------- פס שעם עליון (משותף גם לעמוד הלוח) ---------------- */
+
+.page-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px 28px;
+  padding: 26px clamp(18px, 3vw, 32px) 24px;
+  margin-bottom: 34px;
+  border-radius: 4px;
+  animation: rise-in var(--dur-slow) var(--ease-out) both;
+}
+
+/* תווית נייר עם הכותרת, נעוצה על השעם */
+.page-hero__label {
+  position: relative;
+  padding: 16px 24px 12px;
+  background: var(--paper) var(--texture-paper);
+  border-radius: 3px;
+  box-shadow: var(--shadow-note);
+  rotate: -1deg;
+}
+.page-hero__label h1 { color: var(--ink); line-height: 1.15; }
+.page-hero__sub {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-hand);
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--terracotta);
+}
+
+.page-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1 1 360px;
+  max-width: 560px;
+}
+.page-hero__actions .MuiButton-root { flex: none; min-height: 42px; }
+
+.page-hero__search .MuiOutlinedInput-root {
+  background: var(--paper);
+  border-radius: 999px;
+  min-height: 42px;
+  box-shadow: var(--shadow-note);
+}
+.page-hero__search .MuiOutlinedInput-notchedOutline { border-color: transparent; }
+.page-hero__search .MuiSvgIcon-root { color: var(--ink-faint); }
+
+@media (max-width: 600px) {
+  .page-hero { padding: 20px 14px 18px; margin-bottom: 26px; }
+  .page-hero__actions { flex-basis: 100%; flex-wrap: wrap; }
+  .page-hero__actions .MuiButton-root { width: 100%; }
+}
+
+/* ---------------- רשת הלוחות ---------------- */
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 40px 30px;
+  padding-top: 10px;
+}
+
+@media (max-width: 1000px) {
+  .board-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .board-grid { grid-template-columns: 1fr; gap: 34px; }
+}
+
+/* ---------------- כרטיס לוח = פתק גדול ---------------- */
+
+.board-card {
+  --fold-size: 32px;
+  display: flex;
+  flex-direction: column;
+  min-height: 236px;
+  padding: 26px 24px 18px;
+  text-decoration: none;
+  transition:
+    translate var(--dur) var(--ease-out),
+    rotate var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+  outline-offset: 4px;
+}
+
+.board-card:hover,
+.board-card:focus-visible {
+  translate: 0 -6px;
+  rotate: calc(var(--tilt) * -0.5);
+  box-shadow: var(--shadow-note-lift);
+}
+.board-card:hover .pin,
+.board-card:focus-visible .pin { translate: 50% -2px; }
+
+.board-card:active { translate: 0 -3px; }
+
+.board-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.board-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.42rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.board-card__desc {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #44535F;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.board-card__footer {
+  margin-top: auto;
+  padding-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 10px 12px;
+  /* לא לגעת בפינה המקופלת */
+  padding-inline-end: 24px;
+}
+
+.board-card__progress {
+  display: contents;
+}
+.board-card__progress .progress-track { grid-column: 1 / -1; }
+
+.board-card__count {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4A5965;
+  align-self: center;
+}
+
+/* פס התקדמות */
+.progress-track {
+  height: 7px;
+  border-radius: 999px;
+  background: rgb(36 55 70 / 0.12);
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--ink), #3B5568);
+  transition: width 700ms var(--ease-out);
+}
+.is-loading .progress-track {
+  background: linear-gradient(90deg, rgb(36 55 70 / 0.08) 0%, rgb(36 55 70 / 0.18) 50%, rgb(36 55 70 / 0.08) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+.is-loading .progress-fill { width: 0; }
+
+/* תגיות על הפתק */
+.tag.MuiChip-root {
+  height: 26px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: 0;
+  color: var(--ink);
+  background: rgb(255 253 248 / 0.78);
+  box-shadow: 0 1px 1px rgb(var(--shadow-color) / 0.06);
+}
+.tag .MuiChip-icon { font-size: 16px; margin-inline: 8px -2px; color: inherit; }
+.tag--owner.MuiChip-root { background: #FBE0D6; color: #A3482B; }
+.tag--view.MuiChip-root { background: var(--mustard-soft); color: #7A5B12; }
+
+/* ערימת אווטרים */
+.people-stack {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.people-stack > * {
+  border: 2px solid var(--paper) !important;
+  box-shadow: var(--shadow-xs);
+}
+.people-stack > * + * { margin-inline-start: -9px; }
+.people-stack__more {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+/* ---------------- כרטיס "לוח חדש" ---------------- */
+
+.new-board-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 236px;
+  padding: 24px;
+  font: inherit;
+  color: var(--ink-soft);
+  cursor: pointer;
+  background:
+    var(--texture-paper),
+    rgb(255 253 248 / 0.55);
+  border: 2px dashed rgb(194 96 63 / 0.45);
+  border-radius: 6px;
+  transition:
+    background-color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    translate var(--dur) var(--ease-out);
+}
+.new-board-card:hover,
+.new-board-card:focus-visible {
+  background-color: rgb(247 221 210 / 0.45);
+  border-color: var(--terracotta);
+  translate: 0 -4px;
+}
+
+.new-board-card__plus {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 2.2rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--terracotta);
+  background: var(--paper);
+  box-shadow: var(--shadow-note);
+  transition: rotate var(--dur-slow) var(--ease-spring);
+}
+.new-board-card:hover .new-board-card__plus { rotate: 90deg; }
+
+.new-board-card__label {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.new-board-card__hint {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink-faint);
+}
+
+.board-card__footer .people-stack { grid-column: 2; grid-row: 2; justify-self: end; }

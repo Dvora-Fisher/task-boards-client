@@ -10,7 +10,7 @@ interface membersDialogProps {
 }
 
 export function MembersDialog({ open, onClose, boardId, canManage }: membersDialogProps) {
-    return <Dialog open={open} onClose={onClose} fullWidth >
+    return <Dialog open={open} onClose={onClose} fullWidth className="members-dialog">
         <DialogTitle>חברים בלוח</DialogTitle>
         <DialogContent>
             {canManage && <AddMemberForm boardId={boardId} />}

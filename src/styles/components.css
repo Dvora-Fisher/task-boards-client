@@ -1,0 +1,379 @@
+/* ==========================================================================
+   רכיבי עיצוב משותפים: סיכות, פתקים, שעם, עץ, דף נייר, סרגל עליון, דיאלוגים
+   ========================================================================== */
+
+:root {
+  /* סיכה תלת-ממדית: הדגשת אור למעלה, צל למטה */
+  --pin-gradient-red: radial-gradient(circle at 35% 30%, #F2A68A 0 9%, #D9704E 32%, #B4502F 68%, #8E3A20 100%);
+  --pin-gradient-green: radial-gradient(circle at 35% 30%, #CDE3CF 0 9%, #86AE8E 32%, #5F8A68 68%, #456A4D 100%);
+  --pin-gradient-mustard: radial-gradient(circle at 35% 30%, #FBE3A3 0 9%, #DDB24C 32%, #BE912B 68%, #94701E 100%);
+  --pin-gradient-blue: radial-gradient(circle at 35% 30%, #BFDCEC 0 9%, #6A9FBE 32%, #477E9E 68%, #335F79 100%);
+  --pin-shadow:
+    inset -1px -2px 3px rgb(0 0 0 / 0.18),
+    0 2px 2px rgb(60 30 10 / 0.30),
+    3px 6px 6px -2px rgb(60 30 10 / 0.28);
+}
+
+/* ---------------- משטח שעם ---------------- */
+
+.cork-surface {
+  position: relative;
+  background-color: var(--cork);
+  /* שעם טבעי בהיר, בגוון מעט חם ועמוק יותר מהסרגל העליון */
+  background-image:
+    linear-gradient(180deg, rgb(255 244 228 / 0.12), rgb(255 236 214 / 0.05)),
+    url("../assets/cork-texture.webp");
+  background-size: auto, 350px 60px;
+  box-shadow: var(--shadow-inset-cork);
+}
+
+/* מסגרת עץ בהירה סביב משטח שעם */
+.wood-frame {
+  border: 10px solid transparent;
+  border-image: linear-gradient(135deg, #EEDFC4, #D9BE92 45%, #E7D3B0 70%, #CFAF7E) 1;
+  box-shadow:
+    var(--shadow-inset-cork),
+    0 1px 0 rgb(255 255 255 / 0.5),
+    0 12px 26px -14px rgb(var(--shadow-color) / 0.45);
+}
+
+/* ---------------- סיכה ---------------- */
+
+.pin {
+  position: absolute;
+  inset-block-start: -9px;
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--pin-gradient-red);
+  box-shadow: var(--pin-shadow);
+  z-index: 2;
+  pointer-events: none;
+  transition: translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.pin--green { background: var(--pin-gradient-green); }
+.pin--mustard { background: var(--pin-gradient-mustard); }
+.pin--blue { background: var(--pin-gradient-blue); }
+
+/* ---------------- פתק (בסיס) ---------------- */
+
+.note {
+  --note-bg: var(--note-yellow);
+  --note-top: var(--note-yellow-top);
+  --note-deep: var(--note-yellow-deep);
+  --fold-size: 30px;
+  --fold-bg: var(--cream);
+  --tilt: 0deg;
+
+  position: relative;
+  color: var(--ink);
+  background-color: var(--note-bg);
+  background-image:
+    var(--texture-paper),
+    linear-gradient(180deg, var(--note-top) 0%, var(--note-bg) 100%);
+  background-size: 160px 160px, auto;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: var(--shadow-note);
+  rotate: var(--tilt);
+}
+
+.note--yellow { --note-bg: var(--note-yellow); --note-top: var(--note-yellow-top); --note-deep: var(--note-yellow-deep); }
+.note--pink { --note-bg: var(--note-pink); --note-top: var(--note-pink-top); --note-deep: var(--note-pink-deep); }
+.note--blue { --note-bg: var(--note-blue); --note-top: var(--note-blue-top); --note-deep: var(--note-blue-deep); }
+.note--mint { --note-bg: var(--note-mint); --note-top: var(--note-mint-top); --note-deep: var(--note-mint-deep); }
+.note--cream { --note-bg: var(--note-cream); --note-top: #FBF6EA; --note-deep: #E3D5B8; }
+
+/* פינה מקופלת – בפינה השמאלית התחתונה (סוף השורה ב-RTL) */
+.note--folded::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: var(--fold-size);
+  height: var(--fold-size);
+  background: linear-gradient(45deg, var(--fold-bg) 0 50%, var(--note-deep) 50% 100%);
+  border-top-right-radius: 4px;
+  box-shadow: 2px -2px 4px -1px rgb(var(--shadow-color) / 0.16);
+  pointer-events: none;
+}
+
+/* ---------------- דף נייר ---------------- */
+
+.paper-sheet {
+  position: relative;
+  background: var(--paper) var(--texture-paper);
+  border-radius: 14px;
+  border: 1px solid rgb(140 106 67 / 0.14);
+  box-shadow: var(--shadow-sm);
+}
+
+/* פיסת סלוטייפ */
+.tape {
+  position: absolute;
+  width: 84px;
+  height: 22px;
+  background: rgb(246 238 220 / 0.88);
+  border: 1px solid rgb(140 106 67 / 0.12);
+  box-shadow: var(--shadow-xs);
+  pointer-events: none;
+}
+
+/* ---------------- סרגל עליון (Navbar) – רצועת שעם טבעית במסגרת עץ ---------------- */
+
+.app-bar.MuiAppBar-root {
+  color: var(--ink);
+  background-color: #DDB98C;
+  /* שעם בהיר בגוון דבש – בהיר וזהוב מעט יותר מהשעם שבעמודים, כדי שיהיה הבדל עדין ביניהם */
+  background-image:
+    linear-gradient(180deg, rgb(255 244 214 / 0.42), rgb(255 232 188 / 0.34)),
+    url("../assets/cork-texture.webp");
+  background-size: auto, 350px 60px;
+  /* פס עץ בהיר בתחתית – כמו המסגרת של לוח השעם */
+  border-bottom: 6px solid #E2CBA5;
+  box-shadow:
+    inset 0 -3px 8px rgb(70 40 10 / 0.22),
+    0 1px 0 rgb(140 106 67 / 0.55),
+    0 8px 20px -10px rgb(var(--shadow-color) / 0.5);
+}
+
+.app-bar .MuiToolbar-root {
+  gap: 12px;
+  min-height: 74px;
+  max-width: 1240px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: clamp(10px, 3vw, 24px);
+}
+
+/* כל פריט בסרגל הוא "פתק נייר" קטן הנעוץ על השעם */
+.app-bar__brand,
+.app-bar__link,
+.app-bar__user,
+.app-bar .MuiButton-outlined {
+  background-color: var(--paper);
+  background-image: var(--texture-paper);
+  border: 1px solid rgb(140 106 67 / 0.18);
+  box-shadow: 0 1px 1px rgb(60 35 10 / 0.12), 0 4px 8px -3px rgb(60 35 10 / 0.35);
+}
+
+.app-bar__brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 5px 14px 5px 10px;
+  border-radius: 6px;
+  rotate: -1.2deg;
+  transition: rotate var(--dur) var(--ease-out), translate var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.app-bar__brand:hover {
+  rotate: 0deg;
+  translate: 0 -1px;
+  box-shadow: 0 2px 2px rgb(60 35 10 / 0.12), 0 8px 14px -4px rgb(60 35 10 / 0.4);
+}
+.app-bar__brand:hover .logo__mark { rotate: -4deg; }
+
+.app-bar__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 999px;
+  transition: background-color var(--dur) var(--ease-out), translate var(--dur) var(--ease-out);
+}
+.app-bar__link:hover { translate: 0 -1px; }
+.app-bar__link.active {
+  color: var(--terracotta);
+  box-shadow: inset 0 -3px 0 var(--terracotta), 0 1px 1px rgb(60 35 10 / 0.12), 0 4px 8px -3px rgb(60 35 10 / 0.35);
+}
+
+.app-bar__user {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 4px 3px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.93rem;
+  color: var(--ink);
+  min-width: 0;
+}
+.app-bar__user-first { display: none; }
+.app-bar__user-name,
+.app-bar__user-first {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-bar .MuiButton-outlined {
+  color: var(--ink);
+  min-height: 40px;
+}
+.app-bar .MuiButton-outlined:hover {
+  background-color: #FFFFFF;
+  border-color: rgb(140 106 67 / 0.35);
+  color: var(--terracotta);
+}
+
+@media (max-width: 600px) {
+  .app-bar .MuiToolbar-root { min-height: 62px; gap: 6px; }
+  .app-bar__brand { padding: 4px 8px 4px 6px; }
+  /* במובייל הלוגו עצמו מוביל ללוחות, כך שמפנים מקום לשם המחוברת */
+  .app-bar__link--boards { display: none; }
+  .app-bar__link { padding: 8px; }
+  .app-bar__link-text { display: none; }
+  .app-bar__user { padding-inline-start: 10px; font-size: 0.85rem; flex-shrink: 1; }
+  .app-bar__user-name { display: none; }
+  .app-bar__user-first { display: block; max-width: 110px; }
+  .app-bar .MuiButton-outlined { min-width: 0; padding-inline: 9px; }
+  .app-bar .MuiButton-outlined .MuiButton-startIcon { margin: 0; }
+  .app-bar__logout-text { display: none; }
+}
+
+@media (max-width: 380px) {
+  .logo__save { display: none; }
+}
+
+/* ---------------- לוגו ---------------- */
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+  user-select: none;
+}
+
+.logo__mark {
+  width: 42px;
+  height: 46px;
+  flex: none;
+  overflow: visible;
+  filter: drop-shadow(0 2px 2px rgb(30 15 5 / 0.25));
+  transition: rotate var(--dur) var(--ease-spring), translate var(--dur) var(--ease-out);
+}
+
+.logo__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo__save {
+  font-family: "Caveat", var(--font-hand);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 0.9;
+  color: var(--note-yellow);
+  rotate: -4deg;
+  margin-inline-start: 2px;
+}
+
+.logo__date {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  position: relative;
+}
+/* קו "מרקר" מתחת למילה Date */
+.logo__date::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: 1px;
+  height: 7px;
+  border-radius: 3px;
+  z-index: -1;
+  background: rgb(194 96 63 / 0.85);
+}
+.logo__date { z-index: 0; isolation: isolate; }
+
+.logo--light .logo__date { color: #FFF8EC; }
+.logo--dark .logo__save { color: var(--terracotta); }
+.logo--dark .logo__date { color: var(--ink); }
+.logo--dark .logo__date::after { background: rgb(245 215 127 / 0.9); }
+
+@media (max-width: 600px) {
+  .logo__mark { width: 34px; height: 38px; }
+  .logo__save { font-size: 1rem; }
+  .logo__date { font-size: 1.3rem; }
+}
+
+/* ---------------- אווטרים ---------------- */
+
+.avatar-tone-0 { background-color: var(--terracotta) !important; color: #fff !important; }
+.avatar-tone-1 { background-color: var(--sage) !important; color: #fff !important; }
+.avatar-tone-2 { background-color: var(--mustard) !important; color: #fff !important; }
+.avatar-tone-3 { background-color: var(--sky) !important; color: #fff !important; }
+
+/* ---------------- חלונות (Dialog) – גיליון נייר מונח על הלוח ---------------- */
+
+.MuiDialog-paper::before {
+  /* סיכה בראש כל חלון */
+  content: "";
+  position: absolute;
+  inset-block-start: -10px;
+  inset-inline-start: 50%;
+  translate: 50% 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--pin-gradient-red);
+  box-shadow: var(--pin-shadow);
+  z-index: 2;
+}
+
+.MuiDialog-paper::after {
+  /* פס צבעוני עדין בראש הדף */
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  height: 6px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, var(--note-blue), var(--note-mint), var(--note-yellow), var(--note-pink));
+  opacity: 0.9;
+}
+
+.MuiDialog-container .MuiDialog-paper {
+  animation: sheet-in var(--dur-slow) var(--ease-out) both;
+}
+
+/* כפתורי פעולה בתחתית טפסים */
+.form-actions {
+  padding-top: 8px;
+  border-top: 1px dashed rgb(140 106 67 / 0.25);
+  margin-top: 4px !important;
+}
+
+/* ---------------- חלון אישור ---------------- */
+
+.confirm-dialog .MuiDialog-paper::before { background: var(--pin-gradient-mustard); }
+.confirm-dialog .MuiDialog-paper::after {
+  background: repeating-linear-gradient(-45deg, var(--note-pink) 0 10px, var(--note-pink-top) 10px 20px);
+}
+.confirm-dialog__icon {
+  width: 52px;
+  height: 52px;
+  margin: 4px auto 10px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+.confirm-dialog__text {
+  text-align: center;
+  color: var(--ink-soft);
+}
+.confirm-dialog__text strong { color: var(--ink); }
