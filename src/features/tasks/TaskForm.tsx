@@ -1,14 +1,16 @@
 import { useCreateTask, useUpdateTask } from "./tasksHooks"
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Box, Stack, TextField, Alert, MenuItem, ToggleButtonGroup, Typography, ToggleButton } from '@mui/material'
+import { Box, Stack, TextField, Alert, MenuItem, ToggleButtonGroup, Typography, ToggleButton, Autocomplete, FormControlLabel, Switch } from '@mui/material'
+import { useMembers } from '../members/membersHooks'
 import { emptyTaskValues, taskSchema, toFormValues, toTaskInput, type TaskFormValues } from './taskSchemas'
 import { statusLabels, priorityLabels, scheduleLabels } from "./taskLabels"
 import type { Task, ScheduleType } from "../../types"
 import dayjs from 'dayjs'
 import { timeFormat } from '../../utils/timeFormat';
 import { getErrorMessage } from "../../utils/errorMessages"
-import {FormActions} from '../../components/FormActions'
+import { FormActions } from '../../components/FormActions'
+
 interface TaskFormProrps {
     boardId: string,
     onClose: () => void,
@@ -24,7 +26,9 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
         resolver: zodResolver(taskSchema),
         defaultValues: task ? toFormValues(task) : emptyTaskValues
     });
+    const { data: members = [], isPending: membersPending } = useMembers(boardId)
     const scheduleType = watch('scheduleType')
+    const audience = watch('audience')
     function onSubmit(values: TaskFormValues) {
         const input = toTaskInput(values)
         if (task)
@@ -102,8 +106,56 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         {...register('endAt')} />
                 </Box>
             }
+            {members.length > 1 && (
+                <>
+                    <Controller
+                        name="assigneeIds"
+                        control={control}
+                        render={({ field }) => (
+                            <Autocomplete
+                                multiple
+                                options={members.map((m) => m.user)}
+                                getOptionValue={(user) => user.id}
+                                getOptionLabel={(user) => user.name}
+                                value={field.value}
+                                onChange={(_, ids) => field.onChange(ids)}
+                                loading={membersPending}
+                                noOptionsText="אין חברות נוספות"
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="משויכות"
+                                        placeholder="בחירה"
+                                        error={!!errors.assigneeIds}
+                                        helperText={errors.assigneeIds?.message}
+                                    />
+                                )}
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="audience"
+                        control={control}
+                        render={({ field }) => (
+                            <FormControlLabel
+                                label="גלויה רק למשויכות"
+                                control={
+                                    <Switch
+                                        checked={field.value === 'SELECTED'}
+                                        onChange={(_, checked) => field.onChange(checked ? 'SELECTED' : 'BOARD')}
+                                    />
+                                }
+                            />
+                        )}
+                    />
+                    {audience === 'SELECTED' && (
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: -1.5 }}>
+                            רק היוצרת והמשויכות יראו את המשימה. גם בעלת הלוח לא תראה אותה.
+                        </Typography>
+                    )}
+                </>
+            )}
             <FormActions onCancel={onClose} isPending={isPending} />
         </Stack>
     </Box>
-
 }

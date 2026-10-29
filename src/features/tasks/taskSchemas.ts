@@ -12,6 +12,7 @@ export const taskSchema = z.object({
     startAt: z.string(),
     endAt: z.string(),
     assigneeIds: z.array(z.string()),
+    audience: z.enum(['BOARD', 'SELECTED']),
 }).refine(
     (data) => data.scheduleType !== "DATE" || !!data.dueDate,
     {
@@ -36,7 +37,12 @@ export const taskSchema = z.object({
         data => data.scheduleType !== 'TIMED' || !data.startAt || !data.endAt || dayjs(data.endAt).isAfter(dayjs(data.startAt)), {
         error: "שעת הסיום חייבת להיות אחרי שעת ההתחלה",
         path: ["endAt"],
-    })
+    }).refine(
+        (data) => data.audience !== 'SELECTED' || data.assigneeIds.length > 0,{
+            error: 'משימה פרטית צריכה לפחות משויכת אחת',
+            path: ['assigneeIds']
+        }
+    )
 
 
 export type TaskFormValues = z.infer<typeof taskSchema>
@@ -51,6 +57,7 @@ export const emptyTaskValues: TaskFormValues = {
     startAt: '',
     endAt: '',
     assigneeIds: [],
+    audience: 'BOARD'
 }
 
 export function toTaskInput(values: TaskFormValues): CreateTaskInput {
@@ -60,6 +67,7 @@ export function toTaskInput(values: TaskFormValues): CreateTaskInput {
         status: values.status,
         priority: values.priority,
         assigneeIds: values.assigneeIds,
+        audience: values.audience,
         ...(
             values.scheduleType === "NONE"
                 ? {
@@ -93,5 +101,6 @@ export function toFormValues(task: Task): TaskFormValues {
         startAt: task.startAt ? dayjs(task.startAt).format(timeFormat) : '',
         endAt: task.endAt ? dayjs(task.endAt).format(timeFormat) : '',
         assigneeIds: task.assignees.map((a) => a.id),
+        audience: task.audience
     }
 }

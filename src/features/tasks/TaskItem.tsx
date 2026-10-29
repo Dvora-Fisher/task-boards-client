@@ -1,5 +1,5 @@
 import { Stack, Typography, Chip, IconButton, Tooltip } from "@mui/material"
-import { EditOutlined, DeleteOutlined, AccessTimeOutlined, EventOutlined, CheckCircle } from '@mui/icons-material'
+import { EditOutlined, DeleteOutlined, AccessTimeOutlined, EventOutlined, CheckCircle, LockOutlined, PersonOutlineOutlined } from '@mui/icons-material'
 import type { Task } from "../../types"
 import { statusLabels, priorityLabels } from './taskLabels'
 import dayjs from 'dayjs'
@@ -73,6 +73,23 @@ export function TaskItem({ task, canEdit, onEdit, onDelete }: TaskItemProps) {
                     label={formatTimeRange(task.startAt, task.endAt)}
                 />
             )}
+                        {task.audience === 'SELECTED' && (
+                <Chip
+                    size="small"
+                    className="tag tag--view"
+                    icon={<LockOutlined />}
+                    label="פרטית"
+                />
+            )}
+            {task.assignees.map((user) => (
+                <Chip
+                    key={user.id}
+                    size="small"
+                    className="tag tag--plain"
+                    icon={<PersonOutlineOutlined />}
+                    label={user.name}
+                />
+            ))}
         </Stack>
         {deleteTask.isError && <Typography variant="caption" color="error" sx={{ display: 'block', mt: 1 }}>המחיקה נכשלה</Typography>}
         <ConfirmDialog
