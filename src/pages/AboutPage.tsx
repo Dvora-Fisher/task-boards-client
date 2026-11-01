@@ -88,7 +88,7 @@ export function AboutPage() {
         <section className="about-section" aria-labelledby="about-access">
             <h2 id="about-access" className="about-section__title"><span>סוגי לוחות והרשאות</span></h2>
             <p className="about-section__intro">
-                לכל לוח יש בעלת לוח – מי שפתחה אותו. היא קובעת את סוג הלוח, ורק היא יכולה לשנות את פרטיו ולנהל את החברים.
+                לכל לוח יש בעל לוח – מי שפתח אותו. הוא קובע את סוג הלוח, ורק הוא יכול לשנות את פרטיו ולנהל את החברים.
                 סוג הלוח קובע מה יכולים לעשות כל השאר:
             </p>
 
@@ -113,21 +113,21 @@ export function AboutPage() {
                         <Chip size="small" className="tag tag--view" icon={<VisibilityOutlinedIcon />} label="צפייה בלבד" />
                     </div>
                     <h3>משותף לצפייה</h3>
-                    <p>החברים רואים את כל הלוח – לוח הזמנים, המשימות והתזכורות – אבל רק בעלת הלוח מעדכנת. כמו לוח מודעות מסודר שכולם ניגשים אליו.</p>
+                    <p>החברים רואים את כל הלוח – לוח הזמנים, המשימות והתזכורות – אבל רק בעל הלוח מעדכן. כמו לוח מודעות מסודר שכולם ניגשים אליו.</p>
                 </article>
             </div>
 
             <div className="about-table-wrap paper-sheet">
                 <table className="about-table">
-                    <caption>מי יכולה לעשות מה?</caption>
+                    <caption>מי יכול לעשות מה?</caption>
                     <thead>
                         <tr>
                             <th scope="col">פעולה</th>
                             <th scope="col">
-                                <Chip size="small" className="tag tag--owner" icon={<WorkspacePremiumOutlinedIcon />} label="בעלת הלוח" />
+                                <Chip size="small" className="tag tag--owner" icon={<WorkspacePremiumOutlinedIcon />} label="בעל הלוח" />
                             </th>
-                            <th scope="col">חברה – לוח פתוח</th>
-                            <th scope="col">חברה – צפייה בלבד</th>
+                            <th scope="col">חבר – לוח פתוח</th>
+                            <th scope="col">חבר – צפייה בלבד</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,7 +140,7 @@ export function AboutPage() {
                             <tr key={label as string}>
                                 <th scope="row">{label}</th>
                                 {[owner, member, viewer].map((allowed, i) => (
-                                    <td key={i} data-label={['בעלת הלוח', 'חברה – לוח פתוח', 'חברה – צפייה בלבד'][i]}>
+                                    <td key={i} data-label={['בעל הלוח', 'חבר – לוח פתוח', 'חבר – צפייה בלבד'][i]}>
                                         {allowed
                                             ? <span className="about-yes"><CheckRoundedIcon fontSize="small" /><span className="visually-hidden">כן</span></span>
                                             : <span className="about-no"><CloseRoundedIcon fontSize="small" /><span className="visually-hidden">לא</span></span>}
@@ -159,17 +159,17 @@ export function AboutPage() {
             <div className="about-invite">
                 <ol className="about-invite__list paper-sheet">
                     <li>נכנסים ללוח המשותף ולוחצים על <strong>"חברים בלוח"</strong> שבראש העמוד.</li>
-                    <li>כותבים את <strong>כתובת המייל</strong> שאיתה החברה נרשמה לאתר, ולוחצים "הוספה".</li>
-                    <li>מעכשיו הלוח יופיע אצלה ב<strong>"הלוחות שלי"</strong>, עם התגית "של" ושם בעלת הלוח.</li>
-                    <li>רוצים לשנות מי עורך? בעריכת הלוח מפעילים או מכבים את האפשרות <strong>"החברות בלוח יכולות לערוך משימות"</strong>.</li>
+                    <li>כותבים את <strong>כתובת המייל</strong> שאיתה החבר נרשם לאתר, ולוחצים "הוספה".</li>
+                    <li>מעכשיו הלוח יופיע אצלו ב<strong>"הלוחות שלי"</strong>, עם התגית "של" ושם בעל הלוח.</li>
+                    <li>רוצים לשנות מי עורך? בעריכת הלוח מפעילים או מכבים את האפשרות <strong>"החברים בלוח יכולים לערוך משימות"</strong>.</li>
                 </ol>
                 <aside className="about-tip note note--yellow">
                     <span className="pin pin--green" aria-hidden="true" />
                     <h3>כדאי לדעת</h3>
                     <ul>
-                        <li>אפשר להזמין רק מי שכבר נרשמה לאתר – אם תופיע ההודעה "אין משתמש רשום עם האימייל הזה", בקשו ממנה להירשם קודם.</li>
+                        <li>אפשר להזמין רק מי שכבר נרשם לאתר – אם תופיע ההודעה "אין משתמש רשום עם האימייל הזה", בקשו ממנו להירשם קודם.</li>
                         <li>לוח פרטי לא ניתן לשיתוף. כדי להזמין חברים, משנים את סוג הלוח ל"משותף".</li>
-                        <li>בעלת הלוח יכולה להסיר חברים בכל עת, דרך אותו חלון.</li>
+                        <li>בעל הלוח יכול להסיר חברים בכל עת, דרך אותו חלון.</li>
                     </ul>
                 </aside>
             </div>
@@ -179,16 +179,16 @@ export function AboutPage() {
         <section className="about-section" aria-labelledby="about-assign">
             <h2 id="about-assign" className="about-section__title"><span>שיוך משימות וזמן פנוי</span></h2>
             <p className="about-section__intro">
-                בלוח משותף לא כל משימה שייכת לכולם. אפשר לומר בדיוק מי אחראית על מה, לשמור משימה אישית רק למי שצריכה לדעת עליה,
-                ולתת למערכת למצוא שעה שבה כולן פנויות.
+                בלוח משותף לא כל משימה שייכת לכולם. אפשר לומר בדיוק מי אחראי על מה, לשמור משימה אישית רק למי שצריך לדעת עליה,
+                ולתת למערכת למצוא שעה שבה כולם פנויים.
             </p>
             <div className="about-assign">
                 <article className="about-feature paper-sheet">
                     <span className="about-feature__icon" aria-hidden="true"><PersonAddAltOutlinedIcon /></span>
                     <h3>משימה עם שם</h3>
                     <p>
-                        בטופס המשימה, בשדה <strong>"משויכות"</strong>, בוחרים חברה אחת או יותר מהלוח.
-                        השמות יופיעו על הפתק, כל אחת עם עיגול ראשי תיבות בצבע משלה – כך רואים מיד מי מטפלת במה.
+                        בטופס המשימה, בשדה <strong>"משויכים"</strong>, בוחרים חבר אחד או יותר מהלוח.
+                        השמות יופיעו על הפתק, כל אחד עם עיגול ראשי תיבות בצבע משלו – כך רואים מיד מי מטפל במה.
                     </p>
                     <div className="about-feature__demo" aria-hidden="true">
                         <Chip size="small" className="tag tag--person" avatar={<Avatar className="avatar-tone-0">רכ</Avatar>} label="רחל כהן" />
@@ -200,8 +200,8 @@ export function AboutPage() {
                     <span className="about-feature__icon" aria-hidden="true"><LockOutlinedIcon /></span>
                     <h3>משימה פרטית</h3>
                     <p>
-                        מפעילים את <strong>"גלויה רק למשויכות"</strong>, והמשימה נשארת בין מי שיצרה אותה לבין מי שמשויכות אליה –
-                        אפילו בעלת הלוח לא תראה אותה, אלא אם היא יצרה אותה או משויכת אליה. משימה פרטית צריכה לפחות משויכת אחת.
+                        מפעילים את <strong>"גלויה רק למשויכים"</strong>, והמשימה נשארת בין מי שיצר אותה לבין מי שמשויכים אליה –
+                        אפילו בעל הלוח לא יראה אותה, אלא אם הוא יצר אותה או משויך אליה. משימה פרטית צריכה לפחות משויך אחד.
                     </p>
                     <div className="about-feature__demo" aria-hidden="true">
                         <span className="about-private-note note note--yellow">
@@ -228,7 +228,7 @@ export function AboutPage() {
             <ul className="about-assign__notes">
                 <li>ההצעות הן חלונות זמן שלא מתנגשים במשימות עם שעות שכבר נקבעו בלוח הזה.</li>
                 <li>זמנים שכבר עברו לא מוצעים – אם השעות של היום חלפו, החיפוש מתחיל ממחר.</li>
-                <li>השדות של שיוך ופרטיות מופיעים בלוח משותף שיש בו לפחות חברה אחת מלבד בעלת הלוח.</li>
+                <li>השדות של שיוך ופרטיות מופיעים בלוח משותף שיש בו לפחות חבר אחד מלבד בעל הלוח.</li>
             </ul>
         </section>
 
@@ -276,7 +276,7 @@ export function AboutPage() {
                         <Chip size="small" className="tag tag--view" icon={<VisibilityOutlinedIcon />} label="צפייה בלבד" />
                         <Chip size="small" className="tag tag--reminder" icon={<NotificationsOutlinedIcon />} label="תזכורת" />
                         <Chip size="small" className="tag tag--private" icon={<LockOutlinedIcon />} label="פרטית" />
-                        <Chip size="small" className="tag tag--person" avatar={<Avatar className="avatar-tone-1">שכ</Avatar>} label="משויכת" />
+                        <Chip size="small" className="tag tag--person" avatar={<Avatar className="avatar-tone-1">שכ</Avatar>} label="משויך" />
                     </div>
                     <ul className="about-legend about-legend--dots">
                         <li><span className="dot" style={{ background: '#A3482B' }} aria-hidden="true" /> עדיפות גבוהה</li>

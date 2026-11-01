@@ -11,7 +11,7 @@ import { Logo } from './Logo'
 export function Navbar() {
     const { mutate, isPending } = useLogout()
     const storedUser = useAppSelector((state) => state.auth.user)
-    // אחרי רענון הדף המשתמשת לא שמורה ב-Redux, ולכן נטען אותה מהשרת (‎/auth/me) כדי שהשם יוצג תמיד
+    // אחרי רענון הדף המשתמש לא שמור ב-Redux, ולכן נטען אותו מהשרת (‎/auth/me) כדי שהשם יוצג תמיד
     const { data: me } = useMe()
     const user = storedUser ?? me?.user ?? null
     return <AppBar position='sticky' elevation={0} className='app-bar'>

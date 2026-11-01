@@ -77,7 +77,7 @@ export function BoardForm({ board, onClose }: BoardFormProrps) {
                     control={control}
                     render={({ field }) => (
                         <FormControlLabel
-                            label="החברות בלוח יכולות לערוך משימות"
+                            label="החברים בלוח יכולים לערוך משימות"
                             control={<Switch checked={field.value} onChange={(_, checked) => field.onChange(checked)} />}
                         />
                     )}

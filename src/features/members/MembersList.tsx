@@ -31,7 +31,7 @@ export function MembersList({ boardId, canManage }: membersListProps) {
             {members.map(member => (
                 <ListItem key={member.user.id} className="members-list__item" secondaryAction={
                     member.isOwner ? (
-                        <Chip size="small" className="tag tag--owner" icon={<WorkspacePremiumOutlinedIcon />} label="בעלת הלוח" />
+                        <Chip size="small" className="tag tag--owner" icon={<WorkspacePremiumOutlinedIcon />} label="בעל הלוח" />
                     ) : canManage ? (
                         <Tooltip title="הסרה מהלוח">
                             <IconButton edge="end" aria-label={`הסרת ${member.user.name} מהלוח`} className="note-actions__delete" disabled={removeMember.isPending} onClick={() => setMemberToRemove(member)}>

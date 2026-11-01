@@ -84,22 +84,22 @@ export function SchedulingSuggestions({ boardId, assignedUserId, onSelect }: Sch
                 slotProps={{ inputLabel: { shrink: true } }} error={!isOrderValid} />
         </Box>
         {!isOrderValid && <Typography variant="caption" color="error">שעת הסיום של החיפוש צריכה להיות אחרי שעת ההתחלה</Typography>}
-        {isInPast && <Typography variant="caption" color="error">השעות האלה כבר עברו. בחרי יום או שעות אחרים</Typography>}
+        {isInPast && <Typography variant="caption" color="error">השעות האלה כבר עברו. בחר יום או שעות אחרים</Typography>}
 
         <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
             <Button variant="outlined" size="small" startIcon={<SearchOutlined />} onClick={handleSearch}
                 disabled={!canSearch || suggestions.isPending}>
-                {suggestions.isPending ? 'מחפשת...' : 'חיפוש'}
+                {suggestions.isPending ? 'מחפש...' : 'חיפוש'}
             </Button>
             <Button size="small" onClick={() => { setIsOpen(false); suggestions.reset() }}>סגירה</Button>
         </Stack>
 
         {suggestions.isError && (
-            <Alert severity="error" sx={{ mt: 1.5 }}>{getErrorMessage(suggestions.error, 'לא הצלחנו לחפש זמנים פנויים, נסי שוב')}</Alert>
+            <Alert severity="error" sx={{ mt: 1.5 }}>{getErrorMessage(suggestions.error, 'לא הצלחנו לחפש זמנים פנויים, נסה שוב')}</Alert>
         )}
         {suggestions.isSuccess && (
             suggestions.data.suggestions.length === 0
-                ? <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>לא נמצא זמן פנוי — נסי יום או טווח שעות אחר</Typography>
+                ? <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>לא נמצא זמן פנוי — נסה יום או טווח שעות אחר</Typography>
                 : <Stack direction="row" spacing={1} useFlexGap sx={{ mt: 1.5, flexWrap: 'wrap' }}>
                     {suggestions.data.suggestions.map((slot) => (
                         <Chip

@@ -16,7 +16,7 @@ export interface Board extends BaseEntity{
 
 export interface BoardAccess {
     isOwner: boolean;   // אני הבעלים
-    isMember: boolean;  // אני חברה בלוח משותף
+    isMember: boolean;  // אני חבר בלוח משותף
     canView: boolean;
     canEdit: boolean;   // מותר להוסיף/לערוך/למחוק משימות ותזכורות
     canManage: boolean; // מותר לשנות הגדרות, קישור וחברים (בעלים בלבד)

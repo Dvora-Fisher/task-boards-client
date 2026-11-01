@@ -39,7 +39,7 @@ export const taskSchema = z.object({
         path: ["endAt"],
     }).refine(
         (data) => data.audience !== 'SELECTED' || data.assigneeIds.length > 0,{
-            error: 'משימה פרטית צריכה לפחות משויכת אחת',
+            error: 'משימה פרטית צריכה לפחות משויך אחד',
             path: ['assigneeIds']
         }
     )

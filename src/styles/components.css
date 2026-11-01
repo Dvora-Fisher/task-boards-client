@@ -236,7 +236,7 @@
 @media (max-width: 600px) {
   .app-bar .MuiToolbar-root { min-height: 62px; gap: 6px; }
   .app-bar__brand { padding: 4px 8px 4px 6px; }
-  /* במובייל הלוגו עצמו מוביל ללוחות, כך שמפנים מקום לשם המחוברת */
+  /* במובייל הלוגו עצמו מוביל ללוחות, כך שמפנים מקום לשם המחובר */
   .app-bar__link--boards { display: none; }
   .app-bar__link { padding: 8px; }
   .app-bar__link-text { display: none; }

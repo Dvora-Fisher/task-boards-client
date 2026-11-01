@@ -133,11 +133,11 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                                 value={field.value}
                                 onChange={(_, ids) => field.onChange(ids)}
                                 loading={membersPending}
-                                noOptionsText="אין חברות נוספות"
+                                noOptionsText="אין חברים נוספים"
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        label="משויכות"
+                                        label="משויכים"
                                         placeholder="בחירה"
                                         error={!!errors.assigneeIds}
                                         helperText={errors.assigneeIds?.message}
@@ -151,7 +151,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                         control={control}
                         render={({ field }) => (
                             <FormControlLabel
-                                label="גלויה רק למשויכות"
+                                label="גלויה רק למשויכים"
                                 control={
                                     <Switch
                                         checked={field.value === 'SELECTED'}
@@ -163,7 +163,7 @@ export function TaskForm({ boardId, onClose, task }: TaskFormProrps) {
                     />
                     {audience === 'SELECTED' && (
                         <Typography variant="body2" color="text.secondary" sx={{ mt: -1.5 }}>
-                            רק היוצרת והמשויכות יראו את המשימה. גם בעלת הלוח לא תראה אותה.
+                            רק היוצר והמשויכים יראו את המשימה. גם בעל הלוח לא יראה אותה.
                         </Typography>
                     )}
                 </>

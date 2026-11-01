@@ -166,7 +166,7 @@
   background: #DFE5EA;
 }
 
-/* משויכת: תגית עם עיגול ראשי תיבות בצבע של אותה משתמשת */
+/* משויך: תגית עם עיגול ראשי תיבות בצבע של אותו משתמש */
 .tag--person.MuiChip-root {
   padding-inline-start: 2px;
   background: rgb(255 253 248 / 0.85);
@@ -193,7 +193,7 @@
     var(--shadow-note-lift);
 }
 
-/* בחירת משויכות בטופס (Autocomplete) */
+/* בחירת משויכים בטופס (Autocomplete) */
 .MuiAutocomplete-tag.MuiChip-root {
   background: var(--terracotta-soft);
   color: #8E3F26;
